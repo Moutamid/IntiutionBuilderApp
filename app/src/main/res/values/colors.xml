@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#0F6ECC</color>
+    <color name="purple_500">#0F6ECC</color>
+    <color name="purple_700">#0F6ECC</color>
+    <color name="teal_200">#0F6ECC</color>
+    <color name="teal_700">#0F6ECC</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="indicatiorInactive">#0F6ECC</color>
+    <color name="indicatioractive">#0F6ECC</color>
+    <color name="textSecondary">#515151</color>
+    <color name="app_color">#0F6ECC</color>
+
+
+    <!-- colors for onboarding two-->
+    <color name="activeIndicators">#6871d0</color>
+    <color name="inactiveIndicator">#84d4dd</color>
+
+    <!-- colors for onboarding third-->
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#10101C</color>
+    <color name="colorAccent">#fc8019</color>
+
+    <color name="blackNavy">#10101C</color>
+    <color name="next_1">#8B88DC</color>
+    <color name="next_2">#0183C5</color>
+    <color name="next_3">#2F6DFF</color>
+    <color name="next_4">#5FA091</color>
+    <color name="dark_navy">#0E2132</color>
+
+    <!-- colors for onboarding forth-->
+    <color name="backfroung_forth">#fc8019</color>
+    <color name="color_gray">#D8D6D6</color>
+    <color name="color_green">#4CAF50</color>
+    <color name="color_blue">#3F51B5</color>
+    <color name="dark_grey">#59595F</color>
+    <color name="grey">#6F6B6B</color>
+</resources>

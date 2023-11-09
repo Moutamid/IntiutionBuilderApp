@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+
+    tools:context=".Authentication.LoginActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="Statistics"
+            android:textColor="@color/white"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bottom_bg"
+            android:orientation="vertical"
+
+            >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+
+                >
+
+                <ProgressBar
+                    android:id="@+id/loading_progress"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_centerInParent="true"
+                    android:indeterminateDrawable="@drawable/loading_progressbar"
+                    android:rotation="270"
+                    android:progress="80"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:fontFamily="@font/inter_black"
+                    android:gravity="center"
+                    android:text="80%"
+                    android:textColor="@color/black"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/loading_progress"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter_black"
+                    android:text="Score Ranking"
+                    android:textColor="@color/black"
+                    android:textSize="22dp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:src="@drawable/img_1" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:src="@drawable/img_2" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:src="@drawable/img_3" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:src="@drawable/img_4" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:padding="4dp"
+                    android:src="@drawable/img_5" />
+
+            </LinearLayout>
+
+            <com.warkiz.widget.IndicatorSeekBar
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                app:isb_progress="20"
+                app:isb_show_indicator="rounded_rectangle"
+                app:isb_tick_count="7"
+                android:padding="10dp"
+                app:isb_tick_mark_color="@color/backfroung_forth"
+                app:isb_tick_mark_drawable="@drawable/seekbar_view"
+                app:isb_track_rounded_corners="true"
+                app:isb_track_progress_size="20dp"
+                app:isb_track_background_size="20dp"
+                app:isb_track_background_color="#C3BCBC"
+                app:isb_indicator_color="@color/backfroung_forth"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                app:isb_tick_mark_swept_hide="true"
+                app:isb_track_progress_color="@color/backfroung_forth"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Stats"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_margin="20dp"/>
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/inter_bold"
+                android:text="Memory History"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <include layout="@layout/memory_history_layout" />
+
+            <include layout="@layout/memory_history_layout" />
+
+            <include layout="@layout/memory_history_layout" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
