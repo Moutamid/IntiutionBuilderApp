@@ -2,25 +2,33 @@ package com.moutamid.instuitionbuilder.Home;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.fxn.stash.Stash;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
-import com.shawnlin.numberpicker.NumberPicker;
+import com.moutamid.instuitionbuilder.config.Config;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TestStartedActivity extends AppCompatActivity {
     View view1;
@@ -29,19 +37,34 @@ public class TestStartedActivity extends AppCompatActivity {
     private int currentAnimalIndex = 0;
     private TextView scoreText;
     private EditText userInput;
-    private TextView nextButton;
+    private TextView nextButton, next;
     private TextView timerText;
     private ListView enteredNamesListView;
 
     private int score = 0;
 
     private CountDownTimer timer;
+    CircleImageView dp;
+    TextView user_name, animal_name;
+    FirebaseDatabase firebaseDatabase;
+
+    DatabaseReference databaseReference;
+    UserDetails userDetails;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_started);
 
+        next = findViewById(R.id.next);
+        dp = findViewById(R.id.dp);
+        user_name = findViewById(R.id.user_name);
+        dp.setImageResource(Stash.getInt("image_path"));
+        user_name.setText(Stash.getString("name"));
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
+        userDetails = new UserDetails();
 
         // Initialize the animal list
         animalList = new ArrayList<>();
@@ -71,17 +94,39 @@ public class TestStartedActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (enteredNamesList.size() < 3) {
-
                     checkUserInput();
+                } else {
+                    checkUserInput();
+                    next.setVisibility(View.VISIBLE);
+                    nextButton.setVisibility(View.GONE);
+                    userInput.setVisibility(View.GONE);
 
-                }
-                else
-                {
-//                    startActivity(new Intent(TestStartedActivity.this, StatisticsActivity.class));
                 }
             }
         });
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                timer.cancel();
+                int totalScore = 4;
+                double percentage = (double) score / totalScore * 100;
+
+                Config.showProgressDialog(TestStartedActivity.this);
+                userDetails.setProgress(percentage + "");
+                databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
+                        intent.putExtra("score", score);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+
+
+            }
+        });
         // Set up the timer for 1 minute
         timer = new
 
@@ -95,8 +140,22 @@ public class TestStartedActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         // Time is up, show a toast message
-                        showToast("Time's up! Your final score is: " + score);
-                        // You might want to handle the end of the game here
+                        showToast("Time's up!");
+                        timer.cancel();
+                        int totalScore = 4;
+                        double percentage = (double) score / totalScore * 100;
+
+                        Config.showProgressDialog(TestStartedActivity.this);
+                        userDetails.setProgress(percentage + "");
+                        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
+                                intent.putExtra("score", score);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
                     }
                 }.
 
@@ -106,53 +165,12 @@ public class TestStartedActivity extends AppCompatActivity {
         view1 =
 
                 findViewById(R.id.view);
-
-        NumberPicker numberPicker = findViewById(R.id.number_picker);
-        numberPicker.setDividerThickness(0);
-        numberPicker.setFormatter(
-
-                getString(R.string.number_picker_formatter));
-        numberPicker.setFormatter(R.string.number_picker_formatter);
-        numberPicker.setSelectedTextSize(
-
-                getResources().
-
-                        getDimension(R.dimen.selected_text_size));
-        numberPicker.setSelectedTypeface(Typeface.create(
-
-                getString(R.string.roboto_light), Typeface.NORMAL));
-        numberPicker.setSelectedTypeface(
-
-                getString(R.string.roboto_light), Typeface.NORMAL);
-
-        numberPicker.setTextColorResource(R.color.dark_grey);
-
-        // Set text size
-        numberPicker.setTextSize(R.dimen.text_size);
-
-        numberPicker.setTypeface(Typeface.create(
-
-                getString(R.string.roboto_light), Typeface.NORMAL));
-        numberPicker.setTypeface(
-
-                getString(R.string.roboto_light), Typeface.NORMAL);
-        String[] data = {"Cat", "Dog", "Fish", "Elephant", "Rabbit", "Cow", "Goat", "Lion", "Deer"};
-        numberPicker.setMinValue(1);
-        numberPicker.setMaxValue(data.length);
-        numberPicker.setDisplayedValues(data);
-        numberPicker.setFadingEdgeEnabled(true);
-//        numberPicker.setScrollerEnabled(true);
-//        numberPicker.setWrapSelectorWheel(true);
-//        numberPicker.setAccessibilityDescriptionEnabled(true);
-        numberPicker.setSelectedTextColor(ContextCompat.getColor(TestStartedActivity.this, R.color.dark_grey));
         view1.setVisibility(View.VISIBLE);
 
 
     }
 
-    public void statistics(View view) {
-        startActivity(new Intent(TestStartedActivity.this, StatisticsActivity.class));
-    }
+
 
     private void showNextAnimal() {
         if (currentAnimalIndex < animalList.size()) {
@@ -175,35 +193,40 @@ public class TestStartedActivity extends AppCompatActivity {
 
     private void checkUserInput() {
         String userEnteredText = userInput.getText().toString().trim();
+        if (!userEnteredText.isEmpty()) {
+            if (enteredNamesList.size() < 5) {
+                if (!enteredNamesList.contains(userEnteredText)) {
+                    // Add the entered name to the list
+                    enteredNamesList.add(userEnteredText);
 
-        if (enteredNamesList.size() < 5) {
-            if (!enteredNamesList.contains(userEnteredText)) {
-                // Add the entered name to the list
-                enteredNamesList.add(userEnteredText);
+                    // Update the entered names ListView
+                    updateEnteredNamesList();
+                    if ((animalList.contains(userEnteredText.toLowerCase()))) {
+                        // User entered the correct name
+                        score++;
+                    }
 
-                // Update the entered names ListView
-                updateEnteredNamesList();
-                if ((animalList.contains(userEnteredText.toLowerCase()))) {
-                    // User entered the correct name
-                    score++;
+                    // Move to the next animal
+                    currentAnimalIndex++;
+                    // Update the score
+                    updateScore();
+
+                    // Clear the EditText for the next input
+                    userInput.getText().clear();
+
+                    // Show the next animal or handle accordingly
+                    showNextAnimal();
+
+                } else {
+                    userInput.setVisibility(View.VISIBLE);
+
+                    Toast.makeText(this, "Already write this answer", Toast.LENGTH_SHORT).show();
                 }
-
-                // Move to the next animal
-                currentAnimalIndex++;
-                // Update the score
-                updateScore();
-                // Clear the EditText for the next input
-                userInput.getText().clear();
-
-                // Show the next animal or handle accordingly
-                showNextAnimal();
             } else {
-                Toast.makeText(this, "Already write this answer", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            Toast.makeText(this, "limit exceed", Toast.LENGTH_SHORT).show();
-        }
 
+                Toast.makeText(this, "limit exceed", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
 

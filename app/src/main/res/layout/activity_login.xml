@@ -117,6 +117,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:onClick="google"
+
         android:background="@drawable/btn_bg_normal"
         android:backgroundTint="#EFEFEF"
 
@@ -166,6 +168,7 @@
 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/facebook_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -218,6 +221,16 @@
             android:text="  Register"
             android:textSize="15dp" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/bt_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp" />
     </LinearLayout>
 
 

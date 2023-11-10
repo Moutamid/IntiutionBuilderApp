@@ -39,12 +39,14 @@
                 />
 
             <TextView
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_toRightOf="@+id/dp"
                 android:fontFamily="@font/inter_semi_bold"
-                android:text="     Fiza"
+                android:layout_marginLeft="20dp"
+                android:text="Fiza"
                 android:textColor="#FFFFFF"
 
                 />
@@ -117,6 +119,24 @@
                     android:textColor="@color/black"
                     android:textSize="18dp" />
 
+                <TextView
+                    android:id="@+id/timerText"
+                    android:layout_width="90sp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/btn_bg_normal"
+                    android:backgroundTint="#C8F4D7"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="13dp"
+                    android:text="20s"
+                    android:drawableStart="@drawable/timer"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/inter_medium"
+                    android:src="@drawable/time" />
+
                 <ImageView
                     android:layout_width="100sp"
                     android:layout_height="40dp"
@@ -168,7 +188,7 @@
                             android:layout_height="50dp"
                             android:layout_centerInParent="true"
                             android:background="@drawable/btn_bg"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
 
                     </RelativeLayout>
 
@@ -185,13 +205,23 @@
 
                 </LinearLayout>
 
+
                 <com.shawnlin.numberpicker.NumberPicker
                     android:id="@+id/number_picker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp" />
+                    android:layout_marginTop="20dp"
+                    app:np_dividerColor="@color/colorPrimary"
+                    app:np_dividerThickness="0dp"
+                    app:np_formatter="@string/number_picker_formatter"
+                    app:np_height="180dp"
+                    app:np_selectedTextColor="@color/colorPrimary"
+                    app:np_selectedTextSize="@dimen/selected_text_size"
+                    app:np_textColor="@color/colorPrimary"
+                    app:np_textSize="@dimen/text_size"
+                    app:np_typeface="@string/roboto_light"
+                    app:np_width="64dp" />
 
 
             </RelativeLayout>
@@ -239,13 +269,14 @@
             android:background="@drawable/btn_bg_grey"
             android:fontFamily="@font/inter_semi_bold"
             android:gravity="center"
+            android:backgroundTint="@color/black"
             android:onClick="test_start"
 
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Continue to Test"
             android:textAllCaps="false"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
 
@@ -260,10 +291,11 @@
 
 
         <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/animal_image"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/cat"
+            android:src="@drawable/elephant"
             app:riv_border_color="@color/white"
             app:riv_border_width="8dp"
             app:riv_corner_radius="20dp" />
@@ -273,8 +305,7 @@
         android:id="@+id/audio"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-
+android:visibility="gone"
         android:background="#88000000">
 
 
@@ -290,12 +321,13 @@
             android:background="@drawable/audio">
 
             <TextView
+                android:id="@+id/animal_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="3dp"
                 android:fontFamily="@font/inter_medium"
-                android:text="Cat"
+                android:text="Elephant"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
@@ -338,34 +370,31 @@
 
             </RelativeLayout>
 
-
             <com.masoudss.lib.WaveformSeekBar
-                android:id="@+id/waveformSeekBar"
+                android:id="@+id/wave"
+                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
+                android:layout_marginLeft="60dp"
                 android:layout_height="45dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="55dp"
+                android:layout_marginRight="50dp"
                 android:layout_marginBottom="8dp"
-                app:marker_color="@color/app_color"
                 app:marker_text_color="@color/colorAccent"
                 app:marker_text_padding="2dp"
+                app:marker_color="@color/grey"
                 app:marker_text_size="12dp"
-                app:marker_width="1dp"
-                app:wave_background_color="@color/color_gray"
+                app:wave_background_color="@color/grey"
                 app:wave_corner_radius="2dp"
-                app:wave_gap="2dp"
+                app:marker_width="1dp"
+                app:wave_gap="1dp"
                 app:wave_gravity="center"
-                app:wave_max_progress="100"
-                app:wave_min_height="3dp"
+                app:wave_min_height="5dp"
                 app:wave_padding_Bottom="2dp"
-                app:wave_padding_left="2dp"
+                app:wave_max_progress="100"
                 app:wave_padding_right="2dp"
+                app:wave_padding_left="2dp"
                 app:wave_padding_top="2dp"
-                app:wave_progress="33"
-                app:wave_progress_color="@color/black"
-                app:wave_width="2dp" />
-
+                app:wave_progress_color="@color/colorAccent"
+                app:wave_width="1dp" />
         </RelativeLayout>
     </RelativeLayout>
 

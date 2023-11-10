@@ -28,12 +28,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
     }
 
     public void walk_through(View view) {
-//        if (FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
             startActivity(new Intent(OTPVerificationActivity.this, UserDetailsActivity.class));
-//        }
-//        else {
-//            Toast.makeText(this, "Please verify your email", Toast.LENGTH_SHORT).show();
-//        }
     }
     public void back(View view) {
     onBackPressed();}

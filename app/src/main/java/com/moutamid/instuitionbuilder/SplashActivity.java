@@ -1,15 +1,17 @@
 package com.moutamid.instuitionbuilder;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.fxn.stash.Stash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
+import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.onboadingOne.OnBoardingDesignOne;
 
@@ -29,8 +31,13 @@ public class SplashActivity extends AppCompatActivity {
                 String boarding_view = (shared.getString("boarding_view", ""));
                 if (!boarding_view.isEmpty()) {
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                        startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
-                        finish();
+                      if (!Stash.getString("image_path").isEmpty()) {
+                            startActivity(new Intent(SplashActivity.this, UserDetailsActivity.class));
+                            finish();
+                        }else {
+                            startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
+                            finish();
+                        }
                     } else {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();

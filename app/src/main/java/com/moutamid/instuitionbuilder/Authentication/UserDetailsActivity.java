@@ -9,9 +9,17 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fxn.stash.Stash;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
+import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
 public class UserDetailsActivity extends AppCompatActivity {
@@ -20,6 +28,11 @@ public class UserDetailsActivity extends AppCompatActivity {
     String gender = "not";
     Button btnregister;
 
+    FirebaseDatabase firebaseDatabase;
+
+    DatabaseReference databaseReference;
+    UserDetails userDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +40,10 @@ public class UserDetailsActivity extends AppCompatActivity {
         name = findViewById(R.id.name);
         radio_group = findViewById(R.id.radio_group);
         btnregister = findViewById(R.id.btnregister);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
+        userDetails = new UserDetails();
+
         radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -43,23 +60,44 @@ public class UserDetailsActivity extends AppCompatActivity {
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (gender) {
-                    case "Male":
-                        startActivity(new Intent(UserDetailsActivity.this, MaleProfileSelectActivity.class));
-//                    finish();
-                        break;
-                    case "Female":
-                        startActivity(new Intent(UserDetailsActivity.this, ProfileSelectActivity.class));
-//                    finish();
-                        break;
-                    case "Not Preferred":
-                        startActivity(new Intent(UserDetailsActivity.this, WalkThroughActivity.class));
-//                    finish();
-                        break;
-                }
+                if (name.getText().toString().isEmpty()) {
+                    name.setError("Enter Name");
+                } else if (gender.equals("not")) {
+                    Toast.makeText(UserDetailsActivity.this, "Please select gender", Toast.LENGTH_SHORT).show();
+                } else {
+                    Stash.put("name", name.getText().toString());
+                    Stash.put("gender", gender);
+                    userDetails.setName(name.getText().toString());
+                    userDetails.setGender(gender);
+                    databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                switch (gender) {
+                                    case "Male":
+                                        startActivity(new Intent(UserDetailsActivity.this, MaleProfileSelectActivity.class));
+                                        finish();
+                                        break;
+                                    case "Female":
+                                        startActivity(new Intent(UserDetailsActivity.this, ProfileSelectActivity.class));
+                                        finish();
+                                        break;
+                                    case "Not Preferred":
+                                        Stash.put("image_path", R.drawable.blank_image);
+                                        startActivity(new Intent(UserDetailsActivity.this, WalkThroughActivity.class));
+                                        finish();
+                                        break;
+                                }
+                            } else {
+                                Toast.makeText(UserDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
+
+                }
             }
         });
-    }
 
+    }
 }

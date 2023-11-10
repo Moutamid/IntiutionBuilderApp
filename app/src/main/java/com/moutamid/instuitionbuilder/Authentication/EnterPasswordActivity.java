@@ -12,10 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fxn.stash.Stash;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
 public class EnterPasswordActivity extends AppCompatActivity {
@@ -24,6 +28,10 @@ public class EnterPasswordActivity extends AppCompatActivity {
     private ProgressBar progressbar;
     private FirebaseAuth mAuth;
     String email;
+    FirebaseDatabase firebaseDatabase;
+
+    DatabaseReference databaseReference;
+    UserDetails userDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,10 @@ public class EnterPasswordActivity extends AppCompatActivity {
 
         // taking FirebaseAuth instance
         mAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
+        userDetails = new UserDetails();
+
 
         // initialising all views through id defined above
         confirmPasswordTextView = findViewById(R.id.confirmPasswordTextView);
@@ -85,18 +97,29 @@ public class EnterPasswordActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Please verify your email", Toast.LENGTH_LONG).show();
-
                     progressbar.setVisibility(View.GONE);
-
                     if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(EnterPasswordActivity.this, new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()) {
-                                    Intent intent = new Intent(EnterPasswordActivity.this, OTPVerificationActivity.class);
-                                   intent.putExtra("email", email);
-                                    startActivity(intent);
+                                    userDetails.setEmail(email);
+                                    databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Stash.put("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                Intent intent = new Intent(EnterPasswordActivity.this, OTPVerificationActivity.class);
+                                                intent.putExtra("email", email);
+                                                startActivity(intent);
+                                            } else {
+                                                Toast.makeText(EnterPasswordActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+
+
                                 }
                             }
                         });

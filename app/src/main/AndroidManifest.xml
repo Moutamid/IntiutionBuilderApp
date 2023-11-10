@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.moutamid.instuitionbuilder">
+    <uses-permission android:name = "android.permission.RECORD_AUDIO"/>
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,10 +12,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".config.MyApplication"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".config.MainActivity"
+            android:exported="true" />
+        <activity
             android:name=".Home.DummyActivity"
-            android:exported="true" >
+            android:exported="true">
 
         </activity>
         <activity
@@ -87,9 +92,9 @@
             <!-- </intent-filter> -->
         </activity>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+        <!--        <meta-data-->
+        <!--            android:name="com.facebook.sdk.ApplicationId"-->
+        <!--            android:value="@string/facebook_app_id" />-->
 
         <activity
             android:name="com.facebook.FacebookActivity"

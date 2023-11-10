@@ -27,14 +27,15 @@
                 android:textColor="#E4DEDE"
 
                 />
-
             <TextView
+                android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_toRightOf="@+id/dp"
                 android:fontFamily="@font/inter_semi_bold"
-                android:text="     Boa Hancock"
+                android:layout_marginLeft="20dp"
+                android:text="Fiza"
                 android:textColor="#FFFFFF"
 
                 />
@@ -46,7 +47,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:src="@drawable/demo_img"
+                android:src="@drawable/female_3"
                 app:civ_border_color="#FF9800"
 
                 app:civ_border_width="2dp" />
@@ -106,21 +107,24 @@
                     android:text="Test Started"
                     android:textColor="@color/black"
                     android:textSize="18dp" />
-
                 <TextView
                     android:id="@+id/timerText"
-                    android:layout_width="100sp"
-                    android:layout_height="40dp"
+                    android:layout_width="90sp"
+                    android:layout_height="30dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="15dp"
-                    android:background="@drawable/btn_bg"
+                    android:background="@drawable/btn_bg_normal"
                     android:backgroundTint="#C8F4D7"
                     android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="13dp"
+                    android:text="20s"
+                    android:drawableStart="@drawable/timer"
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter_medium"
                     android:src="@drawable/time" />
-            </RelativeLayout>
+         </RelativeLayout>
 
             <ListView
                 android:id="@+id/enteredNamesListView"
@@ -129,7 +133,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:divider="@drawable/divider"
-
+android:layout_marginLeft="20dp"
                 android:dividerHeight="0dp"
                 android:padding="10dp" />
 
@@ -180,13 +184,6 @@
                 </LinearLayout>
 
 
-                <com.shawnlin.numberpicker.NumberPicker
-                    android:id="@+id/number_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp" />
 
 
             </RelativeLayout>
@@ -228,12 +225,28 @@
             android:backgroundTint="#CACACA"
             android:fontFamily="@font/inter_semi_bold"
             android:gravity="center"
-            android:onClick="statistics"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Wait for test Completion"
             android:textAllCaps="false"
             android:textColor="@color/black"
+            android:textSize="14sp" />
+        <TextView
+            android:id="@+id/next"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@drawable/btn_bg_normal"
+            android:backgroundTint="#000"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:paddingLeft="20dp"
+            android:visibility="gone"
+            android:paddingRight="20dp"
+            android:text="Wait for test Completion"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
             android:textSize="14sp" />
 
 
