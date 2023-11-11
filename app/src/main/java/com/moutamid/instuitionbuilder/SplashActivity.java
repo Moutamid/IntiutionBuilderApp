@@ -1,5 +1,6 @@
 package com.moutamid.instuitionbuilder;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,8 +13,10 @@ import com.fxn.stash.Stash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
+import com.moutamid.instuitionbuilder.Home.StatChartActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.onboadingOne.OnBoardingDesignOne;
+
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -34,10 +37,11 @@ public class SplashActivity extends AppCompatActivity {
                       if (!Stash.getString("image_path").isEmpty()) {
                             startActivity(new Intent(SplashActivity.this, UserDetailsActivity.class));
                             finish();
-                        }else {
-                            startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
-                            finish();
                         }
+                      else {
+                          startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
+                          finish();
+                      }
                     } else {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();
@@ -47,7 +51,6 @@ public class SplashActivity extends AppCompatActivity {
                     startActivity(i);
                     finish();
                 }
-
             }
         }, 2000);
 

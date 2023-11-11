@@ -21,36 +21,41 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TestStartedActivity extends AppCompatActivity {
-    View view1;
-    private List<String> animalList;
-    private List<String> enteredNamesList;
-    private int currentAnimalIndex = 0;
+    private List<String> expectedTextList;
+    private List<String> enteredTextList;
+    private List<Integer> attempts;
+    private int currentTextIndex = 0;
     private TextView scoreText;
     private EditText userInput;
     private TextView nextButton, next;
     private TextView timerText;
-    private ListView enteredNamesListView;
+    private ListView enteredTextListView;
 
     private int score = 0;
 
     private CountDownTimer timer;
     CircleImageView dp;
-    TextView user_name, animal_name;
+    TextView user_name;
     FirebaseDatabase firebaseDatabase;
 
     DatabaseReference databaseReference;
     UserDetails userDetails;
-
+    View view1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,119 +71,71 @@ public class TestStartedActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
         userDetails = new UserDetails();
 
-        // Initialize the animal list
-        animalList = new ArrayList<>();
-
-        // Add your animal names to the list
-        animalList.add("dog");
-        animalList.add("cat");
-        animalList.add("elephant");
-        animalList.add("tiger");
-        enteredNamesList = new ArrayList<>();
+        // Initialize the expected text list
+        expectedTextList = new ArrayList<>();
+        // Add your expected texts to the list
+        expectedTextList.add("dog");
+        expectedTextList.add("cat");
+        expectedTextList.add("elephant");
+        expectedTextList.add("tiger");
+        enteredTextList = new ArrayList<>();
+        attempts = new ArrayList<>();
 
         // Initialize UI components
         scoreText = findViewById(R.id.scoreText);
         userInput = findViewById(R.id.userInput);
         nextButton = findViewById(R.id.nextButton);
         timerText = findViewById(R.id.timerText);
-        enteredNamesListView = findViewById(R.id.enteredNamesListView);
+        enteredTextListView = findViewById(R.id.enteredTextListView);
 
         // Set the initial score
         updateScore();
 
-        // Set the first animal name
-        showNextAnimal();
+        // Set the first expected text
+        showNextText();
 
         // Set click listener for the Next button
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (enteredNamesList.size() < 3) {
-                    checkUserInput();
-                } else {
-                    checkUserInput();
-                    next.setVisibility(View.VISIBLE);
-                    nextButton.setVisibility(View.GONE);
-                    userInput.setVisibility(View.GONE);
-
-                }
+                checkUserInput();
             }
         });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 timer.cancel();
-                int totalScore = 4;
-                double percentage = (double) score / totalScore * 100;
-
-                Config.showProgressDialog(TestStartedActivity.this);
-                userDetails.setProgress(percentage + "");
-                databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
-                        intent.putExtra("score", score);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-
-
+                handleGameEnd();
             }
         });
+
         // Set up the timer for 1 minute
-        timer = new
+        timer = new CountDownTimer(60000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // Update the timer display
+                timerText.setText(millisUntilFinished / 1000 + "s");
+            }
 
-                CountDownTimer(60000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        // Update the timer display
-                        timerText.setText(millisUntilFinished / 1000 + "s");
-                    }
+            @Override
+            public void onFinish() {
+                // Time is up, show a toast message
+//                showToast("Time's up!");
+                timer.cancel();
+                handleGameEnd();
+            }
+        }.start();
 
-                    @Override
-                    public void onFinish() {
-                        // Time is up, show a toast message
-                        showToast("Time's up!");
-                        timer.cancel();
-                        int totalScore = 4;
-                        double percentage = (double) score / totalScore * 100;
-
-                        Config.showProgressDialog(TestStartedActivity.this);
-                        userDetails.setProgress(percentage + "");
-                        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
-                                intent.putExtra("score", score);
-                                startActivity(intent);
-                                finish();
-                            }
-                        });
-                    }
-                }.
-
-                start();
-
-
-        view1 =
-
-                findViewById(R.id.view);
+        view1 = findViewById(R.id.view);
         view1.setVisibility(View.VISIBLE);
-
-
     }
 
-
-
-    private void showNextAnimal() {
-        if (currentAnimalIndex < animalList.size()) {
-            String currentAnimal = animalList.get(currentAnimalIndex);
-            // Set the current animal name in some TextView
-//            animalNameTextView.setText(currentAnimal);
+    private void showNextText() {
+        if (currentTextIndex < expectedTextList.size()) {
+            String currentText = expectedTextList.get(currentTextIndex);
+            // Set the current text in some TextView or handle accordingly
+            // ...
         } else {
-            // All animals have been guessed, show a message or handle accordingly
             final int sdk = android.os.Build.VERSION.SDK_INT;
             if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
                 nextButton.setTextColor(Color.WHITE);
@@ -188,58 +145,88 @@ public class TestStartedActivity extends AppCompatActivity {
                 nextButton.setBackground(ContextCompat.getDrawable(TestStartedActivity.this, R.drawable.btn_bg_black));
             }
             timer.cancel(); // Stop the timer
+            handleGameEnd(); // Common code for the end of the game
         }
     }
 
     private void checkUserInput() {
-        String userEnteredText = userInput.getText().toString().trim();
+        String userEnteredText = userInput.getText().toString().trim().toLowerCase(); // Convert to lowercase for case-insensitive comparison
         if (!userEnteredText.isEmpty()) {
-            if (enteredNamesList.size() < 5) {
-                if (!enteredNamesList.contains(userEnteredText)) {
-                    // Add the entered name to the list
-                    enteredNamesList.add(userEnteredText);
+            if (enteredTextList.size() < expectedTextList.size()) {
+                // Add the entered text to the list
+                enteredTextList.add(userEnteredText);
+                // Update the entered text ListView
+                updateEnteredTextList();
 
-                    // Update the entered names ListView
-                    updateEnteredNamesList();
-                    if ((animalList.contains(userEnteredText.toLowerCase()))) {
-                        // User entered the correct name
-                        score++;
-                    }
+                // Compare the entered text with the expected text
+                String expectedText = expectedTextList.get(enteredTextList.size() - 1);
+                if (userEnteredText.equals(expectedText)) {
+                    // User entered the correct text
+                    score++;
 
-                    // Move to the next animal
-                    currentAnimalIndex++;
-                    // Update the score
-                    updateScore();
-
-                    // Clear the EditText for the next input
-                    userInput.getText().clear();
-
-                    // Show the next animal or handle accordingly
-                    showNextAnimal();
-
+                    attempts.add(score);
                 } else {
-                    userInput.setVisibility(View.VISIBLE);
-
-                    Toast.makeText(this, "Already write this answer", Toast.LENGTH_SHORT).show();
+                    attempts.add(0);
                 }
-            } else {
 
-                Toast.makeText(this, "limit exceed", Toast.LENGTH_SHORT).show();
+                // Move to the next expected text
+                currentTextIndex++;
+                // Update the score
+                updateScore();
+
+                // Clear the EditText for the next input
+                userInput.getText().clear();
+
+                // Show the next expected text or handle accordingly
+                showNextText();
+            } else {
+                showToast("Limit exceeded");
             }
         }
     }
 
-
     private void updateScore() {
-        scoreText.setText("04/0" + score);
+        scoreText.setText("Score: " + score);
     }
 
     private void showToast(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void updateEnteredNamesList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_layout, enteredNamesList);
-        enteredNamesListView.setAdapter(adapter);
+    private void updateEnteredTextList() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, enteredTextList);
+        enteredTextListView.setAdapter(adapter);
+    }
+
+    private void handleGameEnd() {
+        expectedTextList.size();
+        if (score > 0) {
+            int totalScore = expectedTextList.size();
+            double percentage = (double) score / totalScore * 100;
+            Config.showProgressDialog(TestStartedActivity.this);
+            userDetails.setProgress(percentage + "");
+        } else {
+            userDetails.setProgress("0");
+
+        }
+        DatabaseReference child = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");
+        String key = child.push().getKey();
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
+                Locale.getDefault());
+        String date_ = sfd.format(date);
+        userDetails.setNumbers(attempts);
+        userDetails.setKey(key);
+        userDetails.setTimeStamp(date_);
+        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                timer.cancel();
+                Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
+                intent.putExtra("score", score);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

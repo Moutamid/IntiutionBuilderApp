@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
 
     tools:context=".Authentication.LoginActivity">
@@ -11,6 +11,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/black"
     >
     <TextView
         android:layout_width="match_parent"
@@ -97,10 +98,17 @@
             android:layout_marginBottom="10dp"
             android:textSize="18dp" />
 
-        <include layout="@layout/memory_history_layout" />
-        <include layout="@layout/memory_history_layout" />
-        <include layout="@layout/memory_history_layout" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/content_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginLeft="10dp"
 
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp" />
     </LinearLayout>
 
 </LinearLayout>

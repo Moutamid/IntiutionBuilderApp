@@ -127,7 +127,7 @@
          </RelativeLayout>
 
             <ListView
-                android:id="@+id/enteredNamesListView"
+                android:id="@+id/enteredTextListView"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

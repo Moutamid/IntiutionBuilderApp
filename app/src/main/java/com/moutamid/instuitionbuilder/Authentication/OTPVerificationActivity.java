@@ -16,14 +16,17 @@ import com.moutamid.instuitionbuilder.R;
 
 public class OTPVerificationActivity extends AppCompatActivity {
     TextView textView;
-
+EditText number1, number2, number3, number4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpverification);
+//        number1 = findViewById(R.id.number1);
+//        number2 = findViewById(R.id.number2);
+//        number3 = findViewById(R.id.number3);
+//        number4 = findViewById(R.id.number4);
         textView = findViewById(R.id.email_text);
         String email = getIntent().getStringExtra("email");
-
         textView.setText(Html.fromHtml("Enter the 4-digit code sent to you at <b>" + email + "</b>"));
     }
 

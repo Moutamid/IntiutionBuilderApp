@@ -224,21 +224,27 @@ public class WalkThroughActivity extends AppCompatActivity {
                                 animal_name.setText(name);
                                 if (name.equals("Cat")) {
                                     animal_image.setImageResource(R.drawable.cat);
-
+                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.cat);
                                 } else if (name.equals("Tiger")) {
                                     animal_image.setImageResource(R.drawable.tiger);
+                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.tiger);
+
                                 } else if (name.equals("Elephant")) {
                                     animal_image.setImageResource(R.drawable.elephant);
+                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.elephant);
+
                                 } else if (name.equals("Dog")) {
                                     animal_image.setImageResource(R.drawable.dog);
+                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.dog);
+
                                 }
-                                Thread.sleep(700);
+                                Thread.sleep(1000);
                             } catch (Exception e) {
                                 Log.d("Exception", e.getMessage().toString());
                             }
                         }
                     }
-                }, 400);
+                }, 700);
 
             }
         });
@@ -273,6 +279,7 @@ public class WalkThroughActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
+                        timer.cancel();
                         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
                     }
                 }.

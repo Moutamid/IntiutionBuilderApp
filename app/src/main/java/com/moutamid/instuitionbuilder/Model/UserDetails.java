@@ -1,8 +1,29 @@
 package com.moutamid.instuitionbuilder.Model;
 
+import java.util.List;
+
 public class UserDetails {
     String name, image_url, email, gender;
-    String progress;
+    String progress, timeStamp, key;
+    String code;
+    boolean isverified;
+    private List<Integer> numbers;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public boolean isIsverified() {
+        return isverified;
+    }
+
+    public void setIsverified(boolean isverified) {
+        this.isverified = isverified;
+    }
 
     public String getName() {
         return name;
@@ -38,6 +59,30 @@ public class UserDetails {
 
     public String getProgress() {
         return progress;
+    }
+
+    public List<Integer> getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(List<Integer> numbers) {
+        this.numbers = numbers;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public void setProgress(String progress) {

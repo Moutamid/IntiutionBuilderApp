@@ -60,13 +60,21 @@
             android:textColor="#000"
 
             android:textSize="12dp" />
-
-        <ImageView
-            android:layout_width="100dp"
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:numStars="5"
+            android:stepSize="1"
+            android:rating="3.5"
+            android:layout_gravity="end"
+            android:layout_marginRight="-60dp"
+            android:layout_centerVertical="true"
+            android:scaleX="0.36"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
+            android:progressTint="#FFC107"
+            android:scaleY="0.36"/>
 
-            android:src="@drawable/ratebar" />
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

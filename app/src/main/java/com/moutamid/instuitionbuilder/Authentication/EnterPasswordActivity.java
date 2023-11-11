@@ -1,5 +1,7 @@
 package com.moutamid.instuitionbuilder.Authentication;
 
+import static java.net.HttpURLConnection.HTTP_OK;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +23,19 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
+import com.moutamid.instuitionbuilder.SplashActivity;
+import com.moutamid.instuitionbuilder.config.RetrofitClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EnterPasswordActivity extends AppCompatActivity {
     private EditText passwordTextView, confirmPasswordTextView;
@@ -104,16 +119,55 @@ public class EnterPasswordActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()) {
+                                    int randomCode = ThreadLocalRandom.current().nextInt(1000, 10000);
+
                                     userDetails.setEmail(email);
+                                    userDetails.setCode(randomCode+"");
+                                    userDetails.setIsverified(false);
                                     databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-                                                Stash.put("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                Intent intent = new Intent(EnterPasswordActivity.this, OTPVerificationActivity.class);
-                                                intent.putExtra("email", email);
-                                                startActivity(intent);
-                                            } else {
+
+                                                RetrofitClient.getInstance()
+                                                        .getApi()
+                                                        .sendEmail("fizarandhawa15@gmail.com", email, "IntuitionBuilder App Verification Code", "\t\t\n" +
+                                                                "Dear User,\n" +
+                                                                "\n" +
+                                                                "We received a request to access your IntuitionBuilder App through your email address. Your verification code is:\n" +
+                                                                "\n\n" +
+                                                                randomCode+"\n\n" +
+                                                                "\n" +
+                                                                "If you did not request this code, it is possible that someone else is trying to access by using your email. Do not forward or give this code to anyone.\n" +
+                                                                "\n" +
+                                                                "Sincerely yours,\n" +
+                                                                "\n" +
+                                                                "The IntuitionBuilder Team")
+                                                        .enqueue(new Callback<ResponseBody>() {
+                                                            @Override
+                                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                                                if (response.code() == HTTP_OK) {
+                                                                    try {
+                                                                        JSONObject obj = new JSONObject(response.body().string());
+                                                                        Stash.put("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                                                        Intent intent = new Intent(EnterPasswordActivity.this, OTPVerificationActivity.class);
+                                                                        intent.putExtra("email", email);
+                                                                        startActivity(intent);
+                                                                    } catch (JSONException | IOException e) {
+                                                                        Toast.makeText(EnterPasswordActivity.this,  e.getMessage()+" message ", Toast.LENGTH_LONG).show();
+
+                                                                    }
+                                                                }
+                                                            }
+
+                                                            @Override
+                                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                                                Toast.makeText(EnterPasswordActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+
+                                                            }
+                                                        });
+
+                                                  } else {
                                                 Toast.makeText(EnterPasswordActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                                             }
                                         }
