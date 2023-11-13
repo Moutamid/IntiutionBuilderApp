@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
                 String boarding_view = (shared.getString("boarding_view", ""));
                 if (!boarding_view.isEmpty()) {
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                      if (!Stash.getString("image_path").isEmpty()) {
+                      if (Stash.getString("name").isEmpty()) {
                             startActivity(new Intent(SplashActivity.this, UserDetailsActivity.class));
                             finish();
                         }

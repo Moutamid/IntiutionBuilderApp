@@ -111,7 +111,8 @@ public class EnterPasswordActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Please verify your email", Toast.LENGTH_LONG).show();
+                    int randomCode = ThreadLocalRandom.current().nextInt(1000, 10000);
+
                     progressbar.setVisibility(View.GONE);
                     if (!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                         FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(EnterPasswordActivity.this, new OnCompleteListener<Void>() {
@@ -119,8 +120,6 @@ public class EnterPasswordActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<Void> task) {
 
                                 if (task.isSuccessful()) {
-                                    int randomCode = ThreadLocalRandom.current().nextInt(1000, 10000);
-
                                     userDetails.setEmail(email);
                                     userDetails.setCode(randomCode+"");
                                     userDetails.setIsverified(false);
@@ -128,44 +127,45 @@ public class EnterPasswordActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-
-                                                RetrofitClient.getInstance()
-                                                        .getApi()
-                                                        .sendEmail("fizarandhawa15@gmail.com", email, "IntuitionBuilder App Verification Code", "\t\t\n" +
-                                                                "Dear User,\n" +
-                                                                "\n" +
-                                                                "We received a request to access your IntuitionBuilder App through your email address. Your verification code is:\n" +
-                                                                "\n\n" +
-                                                                randomCode+"\n\n" +
-                                                                "\n" +
-                                                                "If you did not request this code, it is possible that someone else is trying to access by using your email. Do not forward or give this code to anyone.\n" +
-                                                                "\n" +
-                                                                "Sincerely yours,\n" +
-                                                                "\n" +
-                                                                "The IntuitionBuilder Team")
-                                                        .enqueue(new Callback<ResponseBody>() {
-                                                            @Override
-                                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                                                                if (response.code() == HTTP_OK) {
-                                                                    try {
-                                                                        JSONObject obj = new JSONObject(response.body().string());
+//                                                RetrofitClient.getInstance()
+//                                                        .getApi()
+//                                                        .sendEmail("fizarandhawa15@gmail.com", "projectfinal263@gmail.com", "IntuitionBuilder App Verification Code", "\t\t\n" +
+//                                                                "Dear User,\n" +
+//                                                                "\n" +
+//                                                                "We received a request to access your IntuitionBuilder App through your email address. Your verification code is:\n" +
+//                                                                "\n\n" +
+//                                                                randomCode+"\n\n" +
+//                                                                "\n" +
+//                                                                "If you did not request this code, it is possible that someone else is trying to access by using your email. Do not forward or give this code to anyone.\n" +
+//                                                                "\n" +
+//                                                                "Sincerely yours,\n" +
+//                                                                "\n" +
+//                                                                "The IntuitionBuilder Team")
+//                                                        .enqueue(new Callback<ResponseBody>() {
+//                                                            @Override
+//                                                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                                                                if (response.code() == HTTP_OK) {
+//                                                                    try {
+//                                                                        Stash.put("code", randomCode);
+//                                                                        JSONObject obj = new JSONObject(response.body().string());
                                                                         Stash.put("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                                        Intent intent = new Intent(EnterPasswordActivity.this, OTPVerificationActivity.class);
+//                                                                        Toast.makeText(getApplicationContext(), "Please verify your email", Toast.LENGTH_LONG).show();
+                                                                        Intent intent = new Intent(EnterPasswordActivity.this, UserDetailsActivity.class);
                                                                         intent.putExtra("email", email);
                                                                         startActivity(intent);
-                                                                    } catch (JSONException | IOException e) {
-                                                                        Toast.makeText(EnterPasswordActivity.this,  e.getMessage()+" message ", Toast.LENGTH_LONG).show();
-
-                                                                    }
-                                                                }
-                                                            }
-
-                                                            @Override
-                                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                                                Toast.makeText(EnterPasswordActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-                                                            }
-                                                        });
+//                                                                    } catch (JSONException | IOException e) {
+//                                                                        Toast.makeText(EnterPasswordActivity.this,  e.getMessage()+" message ", Toast.LENGTH_LONG).show();
+//
+//                                                                    }
+//                                                                }
+//                                                            }
+//
+//                                                            @Override
+//                                                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                                                                Toast.makeText(EnterPasswordActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+//
+//                                                            }
+//                                                        });
 
                                                   } else {
                                                 Toast.makeText(EnterPasswordActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();

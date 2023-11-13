@@ -21,7 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
+import com.moutamid.instuitionbuilder.Model.SteakModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
@@ -56,6 +56,7 @@ public class TestStartedActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     UserDetails userDetails;
     View view1;
+    int streak = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,8 +120,6 @@ public class TestStartedActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                // Time is up, show a toast message
-//                showToast("Time's up!");
                 timer.cancel();
                 handleGameEnd();
             }
@@ -144,7 +143,6 @@ public class TestStartedActivity extends AppCompatActivity {
                 nextButton.setTextColor(Color.WHITE);
                 nextButton.setBackground(ContextCompat.getDrawable(TestStartedActivity.this, R.drawable.btn_bg_black));
             }
-            timer.cancel(); // Stop the timer
             handleGameEnd(); // Common code for the end of the game
         }
     }
@@ -163,18 +161,18 @@ public class TestStartedActivity extends AppCompatActivity {
                 if (userEnteredText.equals(expectedText)) {
                     // User entered the correct text
                     score++;
-
+                    streak++;
+                    Stash.put("streak", streak);
                     attempts.add(score);
                 } else {
                     attempts.add(0);
+                    streak = 0;
+                    Stash.put("streak", streak);
+
                 }
 
-                // Move to the next expected text
                 currentTextIndex++;
-                // Update the score
                 updateScore();
-
-                // Clear the EditText for the next input
                 userInput.getText().clear();
 
                 // Show the next expected text or handle accordingly
@@ -194,11 +192,12 @@ public class TestStartedActivity extends AppCompatActivity {
     }
 
     private void updateEnteredTextList() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, enteredTextList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_layout, enteredTextList);
         enteredTextListView.setAdapter(adapter);
     }
 
     private void handleGameEnd() {
+        userInput.setVisibility(View.GONE);
         expectedTextList.size();
         if (score > 0) {
             int totalScore = expectedTextList.size();
@@ -207,7 +206,6 @@ public class TestStartedActivity extends AppCompatActivity {
             userDetails.setProgress(percentage + "");
         } else {
             userDetails.setProgress("0");
-
         }
         DatabaseReference child = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");
         String key = child.push().getKey();
@@ -218,9 +216,12 @@ public class TestStartedActivity extends AppCompatActivity {
         userDetails.setNumbers(attempts);
         userDetails.setKey(key);
         userDetails.setTimeStamp(date_);
-        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").push().setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
+//                ArrayList<String> resturantModelArrayList = Stash.getArrayList("SteaksList", SteakModel.class);
+//                resturantModelArrayList.add(Stash.getString("streak"));
+//                Stash.put("SteaksList", resturantModelArrayList);
                 timer.cancel();
                 Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
                 intent.putExtra("score", score);

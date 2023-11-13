@@ -1,17 +1,10 @@
 package com.moutamid.instuitionbuilder.onboadingOne;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.R;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.moutamid.instuitionbuilder.SplashActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +30,7 @@ public class OnBoardingDesignOne extends AppCompatActivity {
 
     private OnboardingAdapter onboardingAdapter;
     private LinearLayout layoutOnboardingIndicator;
-    TextView buttonOnboardingAction;
+    Button buttonOnboardingAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +41,22 @@ public class OnBoardingDesignOne extends AppCompatActivity {
                 OnBoardingDesignOne.this, R.style.Theme_Design);
         View bottomSheetView = LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.modal_bottom_sheet,
-                        (ConstraintLayout)findViewById(R.id.modalBottomSheetContainer));
+                        (ConstraintLayout) findViewById(R.id.modalBottomSheetCntainer));
 
         layoutOnboardingIndicator = bottomSheetView.findViewById(R.id.layoutOnboardingIndicators);
-        buttonOnboardingAction = bottomSheetView.findViewById(R.id.button);
-
+        buttonOnboardingAction = bottomSheetView.findViewById(R.id.button1);
+        bottomSheetView.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences preferences = getSharedPreferences("Record", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("boarding_view", "yes");
+                editor.apply();
+                Intent i = new Intent(OnBoardingDesignOne.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
         setOnboardingItem();
         ViewPager2 onboardingViewPager = bottomSheetView.findViewById(R.id.onboardingViewPager);
         onboardingViewPager.setAdapter(onboardingAdapter);
@@ -63,13 +71,8 @@ public class OnBoardingDesignOne extends AppCompatActivity {
                 setCurrentOnboardingIndicators(position);
             }
         });
-        buttonOnboardingAction.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View view) {
-        Toast.makeText(OnBoardingDesignOne.this, "gjhkl;", Toast.LENGTH_SHORT).show();
-    }
-});
-         bottomSheetDialog.setContentView(bottomSheetView);
+
+        bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
 
     }
@@ -103,20 +106,6 @@ public class OnBoardingDesignOne extends AppCompatActivity {
         }
         if (index == onboardingAdapter.getItemCount() - 1){
             buttonOnboardingAction.setText("Continue");
-            SharedPreferences preferences = getSharedPreferences("Record", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("boarding_view", "yes");
-            editor.apply();
-            // TODO button click is not working
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    Intent i = new Intent(OnBoardingDesignOne.this, LoginActivity.class);
-                    startActivity(i);
-                    finish();
-                }
-            }, 1000);
            
         }else {
             buttonOnboardingAction.setText("Next");

@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,8 +30,6 @@ import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -98,7 +95,7 @@ public class WalkThroughActivity extends AppCompatActivity {
                     public void onFinish() {
                         timer.cancel();
                         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-                    }
+                  finish();  }
                 }.
 
                 start();
@@ -221,24 +218,26 @@ public class WalkThroughActivity extends AppCompatActivity {
                                 touch = false;
                                 name = data[newVal - 1].toString();
                                 Log.d("TAG", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
-                                animal_name.setText(name);
-                                if (name.equals("Cat")) {
-                                    animal_image.setImageResource(R.drawable.cat);
-                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.cat);
-                                } else if (name.equals("Tiger")) {
-                                    animal_image.setImageResource(R.drawable.tiger);
-                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.tiger);
-
-                                } else if (name.equals("Elephant")) {
-                                    animal_image.setImageResource(R.drawable.elephant);
-                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.elephant);
-
-                                } else if (name.equals("Dog")) {
-                                    animal_image.setImageResource(R.drawable.dog);
-                                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.dog);
-
+//                                buttonOnBoardingAction.setText(name);
+                                switch (name) {
+                                    case "Cat":
+                                        animal_image.setImageResource(R.drawable.cat);
+                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.cat);
+                                        break;
+                                    case "Tiger":
+                                        animal_image.setImageResource(R.drawable.tiger);
+                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.tiger);
+                                        break;
+                                    case "Elephant":
+                                        animal_image.setImageResource(R.drawable.elephant);
+                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.elephant);
+                                        break;
+                                    case "Dog":
+                                        animal_image.setImageResource(R.drawable.dog);
+                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.dog);
+                                        break;
                                 }
-                                Thread.sleep(1000);
+                                Thread.sleep(900);
                             } catch (Exception e) {
                                 Log.d("Exception", e.getMessage().toString());
                             }
@@ -254,7 +253,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     public void test_start(View view) {
         timer.cancel();
         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-    }
+        finish(); }
 
     @Override
     public void onBackPressed() {
@@ -268,22 +267,18 @@ public class WalkThroughActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        timer = new
 
-                CountDownTimer(60000, 1000) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        // Update the timer display
-                        timerText.setText(millisUntilFinished / 1000 + "s");
-                    }
+    }
 
-                    @Override
-                    public void onFinish() {
-                        timer.cancel();
-                        startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-                    }
-                }.
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+    }
 
-                start();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
     }
 }

@@ -48,7 +48,9 @@
             android:exported="false" />
         <activity
             android:name=".Home.StatChartActivity"
-            android:exported="true" />
+            android:exported="true" >
+
+        </activity>
         <activity
             android:name=".Home.StatisticsActivity"
             android:exported="false" />

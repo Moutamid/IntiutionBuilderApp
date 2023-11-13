@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/white"
     android:orientation="vertical"
-
     tools:context=".Authentication.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/black"
         android:orientation="vertical">
 
         <TextView
@@ -44,17 +43,18 @@
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-                <lecho.lib.hellocharts.view.LineChartView
-                    android:id="@+id/chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_margin="20dp"/>
+            <lecho.lib.hellocharts.view.LineChartView
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_margin="20dp" />
 
-<LinearLayout
+            <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
     <TextView
+        android:id="@+id/remakrs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
@@ -64,12 +64,17 @@
         android:text="Great work remembering the words in the exact order"
         android:textColor="#787373"
         android:textSize="14dp" />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginRight="20dp"
-        android:layout_weight="1.7"
-        android:src="@drawable/semitrackbar" />
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:isIndicator="true"
+        android:layout_marginRight="-35dp"
+        android:scaleX="0.42"
+        android:progressTint="#FF9800"
+        android:scaleY="0.42" />
+
 </LinearLayout>
 
 
@@ -80,31 +85,28 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/inter_bold"
-                android:onClick="history"
                 android:text="Memory History"
                 android:textColor="@color/black"
                 android:textSize="18dp" />
 
-            <include layout="@layout/memory_history_layout" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <include layout="@layout/memory_history_layout" />
-
-            <include layout="@layout/memory_history_layout" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/content_rcv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp" />
+            </RelativeLayout>
 
         </LinearLayout>
 
     </LinearLayout>
 
-</ScrollView><!--<?xml version="1.0" encoding="utf-8"?>-->
-    <!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--    xmlns:tools="http://schemas.android.com/tools"-->
-    <!--    android:layout_width="match_parent"-->
-    <!--    android:layout_height="match_parent"-->
-    <!--    tools:context=".Home.StatChartActivity">-->
-    <!--    <lecho.lib.hellocharts.view.LineChartView-->
-    <!--        android:id="@+id/chart"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="250dp"-->
-    <!--        android:layout_margin="20dp"/>-->
-    <!--</RelativeLayout>-->
+</androidx.core.widget.NestedScrollView>

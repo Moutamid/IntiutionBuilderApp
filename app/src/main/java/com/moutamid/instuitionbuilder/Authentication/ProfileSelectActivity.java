@@ -29,7 +29,7 @@ public class ProfileSelectActivity extends AppCompatActivity {
                 male_2.setBorderColor(getResources().getColor(R.color.black));
                 male_3.setBorderColor(getResources().getColor(R.color.black));
                 male_4.setBorderColor(getResources().getColor(R.color.colorAccent));
-                getImageData(R.drawable.male_4);
+                getImageData(R.drawable.female_4);
             }
         });
         male_1.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +39,7 @@ public class ProfileSelectActivity extends AppCompatActivity {
                 male_2.setBorderColor(getResources().getColor(R.color.black));
                 male_3.setBorderColor(getResources().getColor(R.color.black));
                 male_4.setBorderColor(getResources().getColor(R.color.black));
-                getImageData(R.drawable.male_1);
+                getImageData(R.drawable.female_1);
 
             }
         });
@@ -50,7 +50,7 @@ public class ProfileSelectActivity extends AppCompatActivity {
                 male_2.setBorderColor(getResources().getColor(R.color.colorAccent));
                 male_3.setBorderColor(getResources().getColor(R.color.black));
                 male_4.setBorderColor(getResources().getColor(R.color.black));
-                getImageData(R.drawable.male_2);
+                getImageData(R.drawable.female_2);
 
             }
         });
@@ -61,7 +61,7 @@ public class ProfileSelectActivity extends AppCompatActivity {
                 male_2.setBorderColor(getResources().getColor(R.color.black));
                 male_3.setBorderColor(getResources().getColor(R.color.colorAccent));
                 male_4.setBorderColor(getResources().getColor(R.color.black));
-                getImageData(R.drawable.male_3);
+                getImageData(R.drawable.female_3);
 
             }
         });

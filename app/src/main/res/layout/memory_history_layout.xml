@@ -67,13 +67,14 @@
             android:numStars="5"
             android:stepSize="1"
             android:rating="3.5"
+            android:isIndicator="true"
             android:layout_gravity="end"
             android:layout_marginRight="-60dp"
             android:layout_centerVertical="true"
             android:scaleX="0.36"
             android:layout_alignParentRight="true"
             android:progressTint="#FFC107"
-            android:scaleY="0.36"/>
+            android:scaleY="0.36" />
 
 
     </RelativeLayout>

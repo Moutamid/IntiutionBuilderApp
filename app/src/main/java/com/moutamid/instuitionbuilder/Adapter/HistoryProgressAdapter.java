@@ -6,26 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fxn.stash.Stash;
+import com.moutamid.instuitionbuilder.Home.ScoreRankingActivity;
 import com.moutamid.instuitionbuilder.Home.StatChartActivity;
-import com.moutamid.instuitionbuilder.Model.ProgressModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
 import java.util.List;
 
-public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.GalleryPhotosViewHolder> {
+public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgressAdapter.GalleryPhotosViewHolder> {
 
 
     Context ctx;
     List<UserDetails> videoModelList;
 
-    public ProgressAdapter(Context ctx, List<UserDetails> videoModelList) {
+    public HistoryProgressAdapter(Context ctx, List<UserDetails> videoModelList) {
         this.ctx = ctx;
         this.videoModelList = videoModelList;
     }
@@ -45,14 +44,14 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Galler
         float progress = Float.parseFloat(videoModel.getProgress());
         float rating = (progress / 100.0f) * maxRating;
         holder.ratingBar.setRating(rating);
-
+//        int i = Integer.parseInt((videoModel.getProgress()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ctx, StatChartActivity.class);
-
                 intent.putExtra("key", videoModel.getKey());
                 intent.putExtra("progress", rating);
+//                intent.putExtra("score", i);
                 Stash.put("rating", holder.ratingBar.getRating());
                 ctx.startActivity(intent);
             }
@@ -71,7 +70,6 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Galler
         public GalleryPhotosViewHolder(@NonNull View itemView) {
             super(itemView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
-
 
         }
     }
