@@ -2,6 +2,7 @@ package com.moutamid.instuitionbuilder.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +24,6 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
 
     Context ctx;
     List<UserDetails> videoModelList;
-
     public HistoryProgressAdapter(Context ctx, List<UserDetails> videoModelList) {
         this.ctx = ctx;
         this.videoModelList = videoModelList;
@@ -44,15 +44,14 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
         float progress = Float.parseFloat(videoModel.getProgress());
         float rating = (progress / 100.0f) * maxRating;
         holder.ratingBar.setRating(rating);
-//        int i = Integer.parseInt((videoModel.getProgress()));
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx, StatChartActivity.class);
-                intent.putExtra("key", videoModel.getKey());
-                intent.putExtra("progress", rating);
-//                intent.putExtra("score", i);
+                Intent intent = new Intent(ctx, ScoreRankingActivity.class);
                 Stash.put("rating", holder.ratingBar.getRating());
+                Stash.put("progress", progress);
+                Stash.put("key", videoModel.getKey());
                 ctx.startActivity(intent);
             }
         });

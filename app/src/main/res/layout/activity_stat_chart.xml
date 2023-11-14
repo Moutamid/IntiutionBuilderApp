@@ -59,11 +59,12 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_weight="1"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/inter_medium"
         android:text="Great work remembering the words in the exact order"
         android:textColor="#787373"
-        android:textSize="14dp" />
+        android:textSize="12dp" />
     <RatingBar
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"

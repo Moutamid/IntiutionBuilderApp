@@ -46,7 +46,7 @@ RecyclerView content_rcv;
 
         int score = getIntent().getIntExtra("score", 0);
         score_txt = findViewById(R.id.score);
-        int totalScore = 4;
+        int totalScore = 10;
         percentage = (double) score / totalScore * 100;
         progressBar.setProgress((int) percentage);
         score_txt.setText(percentage + "%");

@@ -1,13 +1,17 @@
 package com.moutamid.instuitionbuilder.Model;
 
 public class SteakModel {
-    String streak;
+    int streak;
 
-    public String getStreak() {
+    public SteakModel(int streak) {
+        this.streak = streak;
+    }
+
+    public int getStreak() {
         return streak;
     }
 
-    public void setStreak(String streak) {
+    public void setStreak(int streak) {
         this.streak = streak;
     }
 }

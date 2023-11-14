@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +57,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     public MediaPlayer mediaPlayer;
     WaveformSeekBar waveformSeekBar;
     private CountDownTimer timer;
-
+    TextView questionText;
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -77,6 +78,8 @@ public class WalkThroughActivity extends AppCompatActivity {
         textView = findViewById(R.id.textView);
         play_icon = findViewById(R.id.play);
         pause_icon = findViewById(R.id.pause);
+        questionText = findViewById(R.id.questionText);
+        questionText.setText("1/10");
         dp.setImageResource(Stash.getInt("image_path"));
         user_name.setText(Stash.getString("name"));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -95,7 +98,7 @@ public class WalkThroughActivity extends AppCompatActivity {
                     public void onFinish() {
                         timer.cancel();
                         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-                  finish();  }
+                    }
                 }.
 
                 start();
@@ -157,12 +160,13 @@ public class WalkThroughActivity extends AppCompatActivity {
         // Set typeface
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
-        String[] data = {"Cat", "Dog", "Tiger", "Elephant"};
+        String[] data = {"Cat", "Dog", "Tiger", "Rat", "Horse", "Lion", "Fish", "Elephant", "Deer", "Monkey"};
         numberPicker.setMinValue(1);
-        numberPicker.setValue(0);
+        numberPicker.setValue(1);
         numberPicker.setMaxValue(data.length);
         numberPicker.setDisplayedValues(data);
         numberPicker.setFadingEdgeEnabled(true);
+        numberPicker.setFadingEdgeStrength(80);
         numberPicker.setScrollerEnabled(true);
         numberPicker.setWrapSelectorWheel(true);
         numberPicker.setAccessibilityDescriptionEnabled(true);
@@ -198,25 +202,26 @@ public class WalkThroughActivity extends AppCompatActivity {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 // Your code
-                final Handler handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
-                        view1.setVisibility(View.VISIBLE);
-                        final int sdk = android.os.Build.VERSION.SDK_INT;
-                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                            buttonOnBoardingAction.setTextColor(Color.WHITE);
-                            buttonOnBoardingAction.setBackgroundDrawable(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-                        } else {
-                            buttonOnBoardingAction.setTextColor(Color.WHITE);
-                            buttonOnBoardingAction.setBackground(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-                        }
-                        if (touch) {
-                            try {
-
+//                final Handler handler = new Handler(Looper.getMainLooper());
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
+//                        view1.setVisibility(View.VISIBLE);
+//                        final int sdk = android.os.Build.VERSION.SDK_INT;
+//                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+//                            buttonOnBoardingAction.setTextColor(Color.WHITE);
+//                            buttonOnBoardingAction.setBackgroundDrawable(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
+//                        } else {
+//                            buttonOnBoardingAction.setTextColor(Color.WHITE);
+//                            buttonOnBoardingAction.setBackground(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
+//                        }
+//                        if (touch) {
+//                            try {
+                                questionText.setText(newVal+"/"+data.length);
                                 touch = false;
                                 name = data[newVal - 1].toString();
+//                                Toast.makeText(WalkThroughActivity.this, "name"+ name, Toast.LENGTH_SHORT).show();
                                 Log.d("TAG", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
 //                                buttonOnBoardingAction.setText(name);
                                 switch (name) {
@@ -237,13 +242,13 @@ public class WalkThroughActivity extends AppCompatActivity {
                                         mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.dog);
                                         break;
                                 }
-                                Thread.sleep(900);
-                            } catch (Exception e) {
-                                Log.d("Exception", e.getMessage().toString());
-                            }
-                        }
-                    }
-                }, 700);
+////                                Thread.sleep(900);
+//                            } catch (Exception e) {
+//                                Log.d("Exception", e.getMessage().toString());
+//                            }
+//                        }
+//                    }
+//                }, 2000);
 
             }
         });
@@ -253,7 +258,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     public void test_start(View view) {
         timer.cancel();
         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-        finish(); }
+    }
 
     @Override
     public void onBackPressed() {

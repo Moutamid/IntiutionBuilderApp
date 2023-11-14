@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import com.moutamid.instuitionbuilder.Adapter.HistoryProgressAdapter;
 import com.moutamid.instuitionbuilder.Adapter.ProgressAdapter;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
@@ -44,7 +45,7 @@ public class StatChartActivity extends AppCompatActivity {
     String color_graph = "#3DB65E";
     String red_color = "#E91E63";
     public List<UserDetails> progressModelList = new ArrayList<>();
-    ProgressAdapter progressAdapter;
+    HistoryProgressAdapter progressAdapter;
     RecyclerView content_rcv;
     RatingBar ratingBar;
     TextView remakrs;
@@ -56,13 +57,12 @@ public class StatChartActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
         String key = getIntent().getStringExtra("key");
-        float progress = getIntent().getFloatExtra("progress", 0);
         ratingBar = findViewById(R.id.ratingBar);
         lineChartView = findViewById(R.id.chart);
         remakrs = findViewById(R.id.remakrs);
         ratingBar.setRating(Stash.getFloat("rating"));
         remakrs.setText("Great work remembering the words in the exact order");
-        if (progress != 0) {
+        if (Stash.getFloat("rating") != 0) {
             Config.showProgressDialog(StatChartActivity.this);
             databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).child("numbers").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -101,7 +101,6 @@ public class StatChartActivity extends AppCompatActivity {
                         Axis yAxis = new Axis();
                         yAxis.setTextColor(Color.parseColor(color_graph));
                         yAxis.setTextSize(16);
-                        Config.dismissProgressDialog();
                     }
                 }
 
@@ -120,7 +119,7 @@ public class StatChartActivity extends AppCompatActivity {
         content_rcv = findViewById(R.id.content_rcv);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(StatChartActivity.this, 1);
         content_rcv.setLayoutManager(gridLayoutManager);
-        progressAdapter = new ProgressAdapter(StatChartActivity.this, progressModelList);
+        progressAdapter = new HistoryProgressAdapter(StatChartActivity.this, progressModelList);
         content_rcv.setAdapter(progressAdapter);
         if (Config.isNetworkAvailable(StatChartActivity.this)) {
             getProducts();
@@ -144,6 +143,7 @@ public class StatChartActivity extends AppCompatActivity {
                     progressModelList.add(progressModel);
                 }
                 progressAdapter.notifyDataSetChanged();
+                Config.dismissProgressDialog();
 
             }
 

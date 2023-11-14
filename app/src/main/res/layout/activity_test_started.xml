@@ -87,11 +87,11 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="20dp"
                     android:fontFamily="@font/inter_medium"
                     android:text="10/06"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
+
 
                 <TextView
                     android:id="@+id/title"
@@ -124,19 +124,48 @@
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter_medium"
                     android:src="@drawable/time" />
-         </RelativeLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/questionText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/scoreText"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/inter_semi_bold"
+                android:text="10/06"
+                android:textColor="@color/black"
+                android:textSize="14dp"
+                android:visibility="gone" />
 
             <ListView
                 android:id="@+id/enteredTextListView"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
+                android:layout_width="190dp"
+                android:layout_height="170dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:divider="@drawable/divider"
-android:layout_marginLeft="20dp"
                 android:dividerHeight="0dp"
+                android:paddingLeft="5dp"
                 android:padding="10dp" />
 
+            <EditText
+                android:id="@+id/userInput"
+
+                android:layout_width="160dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/btn_bg_grey"
+                android:backgroundTint="#ECECEC"
+                android:fontFamily="@font/inter_medium"
+                android:gravity="center"
+                android:hint="Enter text here... "
+                android:textColor="@color/black"
+                android:textSize="14dp" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -154,7 +183,7 @@ android:layout_marginLeft="20dp"
                         android:layout_width="160dp"
                         android:layout_height="50dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginTop="13dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/btn_bg"
                         android:backgroundTint="#ECECEC"
                         android:visibility="visible" />
@@ -188,18 +217,7 @@ android:layout_marginLeft="20dp"
 
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/userInput"
 
-                android:layout_width="160dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="7dp"
-                android:background="@drawable/btn_bg_grey"
-                android:backgroundTint="#ECECEC"
-                android:gravity="center"
-                android:hint="Enter text here..."
-                android:textSize="14dp" />
 
         </LinearLayout>
 
@@ -210,9 +228,6 @@ android:layout_marginLeft="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="35dp"
-
-
         >
 
         <TextView
@@ -221,6 +236,10 @@ android:layout_marginLeft="20dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/btn_bg_normal"
             android:backgroundTint="#CACACA"
             android:fontFamily="@font/inter_semi_bold"

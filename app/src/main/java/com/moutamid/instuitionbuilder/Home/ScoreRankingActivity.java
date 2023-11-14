@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,11 +25,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.instuitionbuilder.Adapter.HistoryProgressAdapter;
+import com.moutamid.instuitionbuilder.Model.SteakModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Axis;
@@ -53,28 +57,81 @@ public class ScoreRankingActivity extends AppCompatActivity {
     double percentage;
     ProgressBar progressBar;
 
+    TextView rank1, rank2, rank3, rank4;
+    ImageView img1, img2, img3, img4;
+    LinearLayout layout1, layout2, layout3, layout4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_ranking);
+        img1 = findViewById(R.id.img1);
+        img2 = findViewById(R.id.img2);
+        img3 = findViewById(R.id.img3);
+        img4 = findViewById(R.id.img4);
+        rank1 = findViewById(R.id.rank1);
+        rank2 = findViewById(R.id.rank2);
+        rank3 = findViewById(R.id.rank3);
+        rank4 = findViewById(R.id.rank4);
+        layout1 = findViewById(R.id.layout1);
+        layout2 = findViewById(R.id.layout2);
+        layout3 = findViewById(R.id.layout3);
+        layout4 = findViewById(R.id.layout4);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
-        String key = getIntent().getStringExtra("key");
-        float progress = getIntent().getFloatExtra("progress", 0);
-//        int score = getIntent().getIntExtra("score", 0);
-        int score=2;
+        float rating = Stash.getFloat("rating");
+        float aFloat = Stash.getFloat("progress");
+        String key = Stash.getString("key");
+
+        ArrayList<SteakModel> userArrayList = Stash.getArrayList("StreakList", SteakModel.class);
+        ArrayList<Integer> newList = new ArrayList<>();
+        for (int i = 0; i < userArrayList.size(); i++) {
+            if (!newList.contains(userArrayList.get(i).getStreak())) {
+                if (userArrayList.get(i).getStreak() != 0) {
+                    newList.add(userArrayList.get(i).getStreak());
+                }
+            }
+        }
+        Collections.sort(newList, Collections.reverseOrder());
+        for (int j = 0; j < newList.size(); j++) {
+            Log.d("streak", "1"+newList.get(3).toString());
+            Log.d("streak", "2"+newList.get(2).toString());
+            Log.d("streak", "3" +newList.get(1).toString());
+            Log.d("streak", "4"+newList.get(0).toString());
+
+            if (j == 0) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+                rank1.setText("X" + newList.get(3).toString());
+            }
+            if (j == 1) {
+                layout2.setVisibility(View.VISIBLE);
+                img2.setImageResource(R.drawable.img_2);
+                rank2.setText("X" + newList.get(2).toString());
+            }
+            if (j == 2) {
+                layout3.setVisibility(View.VISIBLE);
+                img3.setImageResource(R.drawable.img_3);
+                rank3.setText("X" + newList.get(1).toString());
+            }
+            if (j == 3) {
+                layout4.setVisibility(View.VISIBLE);
+                img4.setImageResource(R.drawable.img_4);
+                rank4.setText("X" + newList.get(0).toString());
+            }
+        }
+
+        progressBar = findViewById(R.id.progressBar);
         score_txt = findViewById(R.id.score);
-        int totalScore = 4;
-        percentage = (double) score / totalScore * 100;
-        progressBar.setProgress((int) percentage);
-        score_txt.setText(percentage + "%");
+        Log.d("data", aFloat + " data");
+        progressBar.setProgress((int) aFloat);
+        score_txt.setText(aFloat + "%");
         ratingBar = findViewById(R.id.ratingBar);
         lineChartView = findViewById(R.id.chart);
         remakrs = findViewById(R.id.remakrs);
-//        ratingBar.setRating(score);
+        ratingBar.setRating(rating);
         remakrs.setText("Great work remembering the words in the exact order");
-//        Log.d("ranking",Stash.getArrayList("Streaks", String.class)+" data" );
-        if (progress != 0) {
+        if (rating > 0) {
             Config.showProgressDialog(ScoreRankingActivity.this);
             databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).child("numbers").addValueEventListener(new ValueEventListener() {
                 @Override
@@ -119,7 +176,7 @@ public class ScoreRankingActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-
+                    Config.dismissProgressDialog();
                 }
             });
 
@@ -155,6 +212,7 @@ public class ScoreRankingActivity extends AppCompatActivity {
                     progressModelList.add(progressModel);
                 }
                 progressAdapter.notifyDataSetChanged();
+                Config.dismissProgressDialog();
 
             }
 

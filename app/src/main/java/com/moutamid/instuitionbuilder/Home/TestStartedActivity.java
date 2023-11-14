@@ -40,7 +40,7 @@ public class TestStartedActivity extends AppCompatActivity {
     private List<String> enteredTextList;
     private List<Integer> attempts;
     private int currentTextIndex = 0;
-    private TextView scoreText;
+    private TextView scoreText, questionText;
     private EditText userInput;
     private TextView nextButton, next;
     private TextView timerText;
@@ -57,15 +57,18 @@ public class TestStartedActivity extends AppCompatActivity {
     UserDetails userDetails;
     View view1;
     int streak = 0;
+    ArrayList<SteakModel> userArrayList = Stash.getArrayList("StreakList", SteakModel.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_started);
 
+
         next = findViewById(R.id.next);
         dp = findViewById(R.id.dp);
         user_name = findViewById(R.id.user_name);
+        questionText = findViewById(R.id.questionText);
         dp.setImageResource(Stash.getInt("image_path"));
         user_name.setText(Stash.getString("name"));
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -75,14 +78,20 @@ public class TestStartedActivity extends AppCompatActivity {
         // Initialize the expected text list
         expectedTextList = new ArrayList<>();
         // Add your expected texts to the list
-        expectedTextList.add("dog");
+
         expectedTextList.add("cat");
-        expectedTextList.add("elephant");
+        expectedTextList.add("dog");
         expectedTextList.add("tiger");
+        expectedTextList.add("rat");
+        expectedTextList.add("horse");
+        expectedTextList.add("lion");
+        expectedTextList.add("fish");
+        expectedTextList.add("elephant");
+        expectedTextList.add("deer");
+        expectedTextList.add("monkey");
         enteredTextList = new ArrayList<>();
         attempts = new ArrayList<>();
 
-        // Initialize UI components
         scoreText = findViewById(R.id.scoreText);
         userInput = findViewById(R.id.userInput);
         nextButton = findViewById(R.id.nextButton);
@@ -160,17 +169,20 @@ public class TestStartedActivity extends AppCompatActivity {
                 String expectedText = expectedTextList.get(enteredTextList.size() - 1);
                 if (userEnteredText.equals(expectedText)) {
                     // User entered the correct text
-                    score++;
                     streak++;
                     Stash.put("streak", streak);
                     attempts.add(score);
+
                 } else {
+                    userArrayList.add(new SteakModel(streak));
+                    Stash.put("StreakList", userArrayList);
                     attempts.add(0);
                     streak = 0;
-                    Stash.put("streak", streak);
 
                 }
-
+                if (expectedTextList.contains(userEnteredText)) {
+                    score++;
+                }
                 currentTextIndex++;
                 updateScore();
                 userInput.getText().clear();
@@ -184,7 +196,8 @@ public class TestStartedActivity extends AppCompatActivity {
     }
 
     private void updateScore() {
-        scoreText.setText("Score: " + score);
+        scoreText.setText(attempts.size()+"/"+expectedTextList.size());
+//        questionText.setText("Answer No. "+ attempts.size()+"/"+expectedTextList.size() );
     }
 
     private void showToast(String message) {
@@ -194,6 +207,9 @@ public class TestStartedActivity extends AppCompatActivity {
     private void updateEnteredTextList() {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_layout, enteredTextList);
         enteredTextListView.setAdapter(adapter);
+        enteredTextListView.smoothScrollToPosition(adapter.getCount() - 1);
+        enteredTextListView.setSelection(enteredTextListView.getAdapter().getCount()-1);
+
     }
 
     private void handleGameEnd() {
@@ -219,9 +235,9 @@ public class TestStartedActivity extends AppCompatActivity {
         databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-//                ArrayList<String> resturantModelArrayList = Stash.getArrayList("SteaksList", SteakModel.class);
-//                resturantModelArrayList.add(Stash.getString("streak"));
-//                Stash.put("SteaksList", resturantModelArrayList);
+
+                userArrayList.add(new SteakModel(Stash.getInt("streak")));
+                Stash.put("StreakList", userArrayList);
                 timer.cancel();
                 Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
                 intent.putExtra("score", score);
