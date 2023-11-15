@@ -201,7 +201,8 @@ public class TestStartedActivity extends AppCompatActivity {
     }
 
     private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(TestStartedActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void updateEnteredTextList() {

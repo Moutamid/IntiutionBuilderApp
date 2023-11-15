@@ -7,8 +7,6 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Looper;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -16,7 +14,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,13 +55,14 @@ public class WalkThroughActivity extends AppCompatActivity {
     WaveformSeekBar waveformSeekBar;
     private CountDownTimer timer;
     TextView questionText;
-
+    ImageView notification;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_walk_through);
         waveformSeekBar = findViewById(R.id.wave);
+        notification = findViewById(R.id.notification);
         dp = findViewById(R.id.dp);
         animal_image = findViewById(R.id.animal_image);
         timerText = findViewById(R.id.timerText);
@@ -113,7 +111,13 @@ public class WalkThroughActivity extends AppCompatActivity {
                 mediaPlayer.start();
                 pause_icon.setVisibility(View.VISIBLE);
                 play_icon.setVisibility(View.GONE);
-                 }
+            }
+        });
+        notification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            startActivity(new Intent(WalkThroughActivity.this, NotificationsActivity.class));
+            }
         });
 
         pause_icon.setOnClickListener(new View.OnClickListener() {

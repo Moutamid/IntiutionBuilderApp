@@ -15,13 +15,13 @@
         android:name=".config.MyApplication"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".config.MainActivity"
-            android:exported="true" />
-        <activity
             android:name=".Home.DummyActivity"
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".Home.NotificationsActivity"
+            android:exported="true" />
         <activity
             android:name=".Admin.AdminPanel"
             android:exported="true"></activity>

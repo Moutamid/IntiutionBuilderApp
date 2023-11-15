@@ -72,7 +72,7 @@ public class StatChartActivity extends AppCompatActivity {
                         childValue = childValue * 10;
                         yAxisDataList.add(childValue);
                         if (childValue == 0) {
-                            remakrs.setText("You weren’t able to remember the words in the exact order");
+                            remakrs.setText("You were not able to remember the words in the exact order");
                             color_graph = red_color;
                         }
 

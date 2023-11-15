@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
-import com.moutamid.instuitionbuilder.Model.SteakModel;
 import com.moutamid.instuitionbuilder.onboadingOne.OnBoardingDesignOne;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -37,14 +32,14 @@ public class SplashActivity extends AppCompatActivity {
                 String boarding_view = (shared.getString("boarding_view", ""));
                 if (!boarding_view.isEmpty()) {
                     if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                                if (Stash.getString("name").isEmpty()) {
+                                    startActivity(new Intent(SplashActivity.this, UserDetailsActivity.class));
+                                    finish();
+                                } else {
 
-                        if (Stash.getString("name").isEmpty()) {
-                            startActivity(new Intent(SplashActivity.this, UserDetailsActivity.class));
-                            finish();
-                        } else {
-                            startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
-                            finish();
-                        }
+                                    startActivity(new Intent(SplashActivity.this, WalkThroughActivity.class));
+                                    finish();
+                                }
                     } else {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();

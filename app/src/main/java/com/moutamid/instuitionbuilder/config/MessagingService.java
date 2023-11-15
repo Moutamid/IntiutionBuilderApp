@@ -16,9 +16,11 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
 //import com.fxn.stash.Stash;
+import com.fxn.stash.Stash;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
+import com.moutamid.instuitionbuilder.Model.NotificationModel;
 import com.moutamid.instuitionbuilder.R;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +31,7 @@ import java.util.Random;
 
 public class MessagingService extends FirebaseMessagingService {
 
-//    NotificationModel notificationModel;
+    NotificationModel notificationModel;
 
     @Override
     public void onNewToken(String token) {
@@ -42,17 +44,17 @@ public class MessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(final RemoteMessage remoteMessage) {
-//        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-//        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-//        notificationModel = new NotificationModel();
-//        notificationModel.type = remoteMessage.getData().get("type");
-//        notificationModel.title = remoteMessage.getData().get("data");
-//        notificationModel.message = remoteMessage.getData().get("message");
-//        notificationModel.date = currentDate +" at "+currentTime ;
-//        Log.d("Notification", notificationModel.type+" | "+notificationModel.title+" | "+notificationModel.message+" notification");
-//        ArrayList<NotificationModel> notificationModelArrayList = Stash.getArrayList("Notification", NotificationModel.class);
-//        notificationModelArrayList.add(notificationModel);
-//        Stash.put("Notification", notificationModelArrayList);
+        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+        String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+        notificationModel = new NotificationModel();
+        notificationModel.type = remoteMessage.getData().get("type");
+        notificationModel.title = remoteMessage.getData().get("data");
+        notificationModel.message = remoteMessage.getData().get("message");
+        notificationModel.date = currentDate +" at "+currentTime ;
+        Log.d("Notification", notificationModel.type+" | "+notificationModel.title+" | "+notificationModel.message+" notification");
+        ArrayList<NotificationModel> notificationModelArrayList = Stash.getArrayList("Notification", NotificationModel.class);
+        notificationModelArrayList.add(notificationModel);
+        Stash.put("Notification", notificationModelArrayList);
         final Intent intent = new Intent(MessagingService.this, WalkThroughActivity.class);
 //        intent.putExtra("type", remoteMessage.getData().get("type"));
 //        intent.putExtra("data", remoteMessage.getData().get("data"));

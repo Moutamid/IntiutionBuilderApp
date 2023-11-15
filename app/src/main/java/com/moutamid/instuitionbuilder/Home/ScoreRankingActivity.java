@@ -130,7 +130,7 @@ public class ScoreRankingActivity extends AppCompatActivity {
         lineChartView = findViewById(R.id.chart);
         remakrs = findViewById(R.id.remakrs);
         ratingBar.setRating(rating);
-        remakrs.setText("Great work remembering the words in the exact order");
+        remakrs.setText("Great work remembering the words in  exact order");
         if (rating > 0) {
             Config.showProgressDialog(ScoreRankingActivity.this);
             databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).child("numbers").addValueEventListener(new ValueEventListener() {

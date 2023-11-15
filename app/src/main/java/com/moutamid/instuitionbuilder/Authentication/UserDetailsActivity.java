@@ -22,6 +22,8 @@ import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
+import java.util.Objects;
+
 public class UserDetailsActivity extends AppCompatActivity {
     private EditText name;
     RadioGroup radio_group;
@@ -60,11 +62,12 @@ public class UserDetailsActivity extends AppCompatActivity {
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if (name.getText().toString().isEmpty()) {
                     name.setError("Enter Name");
                 } else if (gender.equals("not")) {
                     Toast.makeText(UserDetailsActivity.this, "Please select gender", Toast.LENGTH_SHORT).show();
-                } else {
+                }  else if(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
                     Stash.put("name", name.getText().toString());
                     Stash.put("gender", gender);
                     userDetails.setName(name.getText().toString());
@@ -95,6 +98,9 @@ public class UserDetailsActivity extends AppCompatActivity {
                     });
 
 
+                }
+                else  {
+                    Toast.makeText(UserDetailsActivity.this, "Please verify your email", Toast.LENGTH_SHORT).show();
                 }
             }
         });
