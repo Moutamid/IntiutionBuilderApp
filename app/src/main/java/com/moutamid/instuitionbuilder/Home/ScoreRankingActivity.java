@@ -45,6 +45,7 @@ public class ScoreRankingActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     LineChartView lineChartView;
+
     private List<Integer> yAxisDataList = new ArrayList<>();
     String color_graph = "#3DB65E";
     String red_color = "#E91E63";
@@ -100,6 +101,7 @@ public class ScoreRankingActivity extends AppCompatActivity {
             Log.d("streak", "4"+newList.get(0).toString());
 
             if (j == 0) {
+
                 layout1.setVisibility(View.VISIBLE);
                 img1.setImageResource(R.drawable.img_1);
                 rank1.setText("X" + newList.get(3).toString());

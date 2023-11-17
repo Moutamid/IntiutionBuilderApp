@@ -5,6 +5,7 @@ import java.util.List;
 public class ProgressModel {
 
     String progress;
+
     String key;
     private List<Integer> numbers;
 

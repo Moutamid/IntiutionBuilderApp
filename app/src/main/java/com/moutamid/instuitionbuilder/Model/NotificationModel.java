@@ -3,6 +3,7 @@ package com.moutamid.instuitionbuilder.Model;
 public class NotificationModel {
    public String title, type, message, date;
 
+
     public NotificationModel() {
     }
 

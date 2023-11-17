@@ -4,6 +4,7 @@ public class AnimalNameModel {
 
     String name;
 
+
     public AnimalNameModel(String name) {
         this.name = name;
     }

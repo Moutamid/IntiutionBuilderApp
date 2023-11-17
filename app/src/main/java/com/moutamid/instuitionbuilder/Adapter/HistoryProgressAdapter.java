@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,11 +49,12 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx, ScoreRankingActivity.class);
-                Stash.put("rating", holder.ratingBar.getRating());
-                Stash.put("progress", progress);
-                Stash.put("key", videoModel.getKey());
-                ctx.startActivity(intent);
+//                Intent intent = new Intent(ctx, ScoreRankingActivity.class);
+//                Stash.put("rating", holder.ratingBar.getRating());
+//                Stash.put("progress", progress);
+//                Stash.put("key", videoModel.getKey());
+//                ctx.startActivity(intent);
+                Toast.makeText(ctx, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
