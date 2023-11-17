@@ -116,7 +116,8 @@ public class WalkThroughActivity extends AppCompatActivity {
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(WalkThroughActivity.this, NotificationsActivity.class));
+            startActivity(new Intent(WalkThroughActivity.this, NotificationsActivity.class
+            ));
             }
         });
 

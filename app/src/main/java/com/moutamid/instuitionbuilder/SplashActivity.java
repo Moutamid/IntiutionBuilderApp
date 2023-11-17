@@ -28,6 +28,7 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 SharedPreferences shared = getSharedPreferences("Record", MODE_PRIVATE);
                 String boarding_view = (shared.getString("boarding_view", ""));
                 if (!boarding_view.isEmpty()) {
