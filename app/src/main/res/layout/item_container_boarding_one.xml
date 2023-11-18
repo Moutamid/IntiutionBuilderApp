@@ -16,7 +16,6 @@
         android:adjustViewBounds="true"
 
         android:layout_margin="15dp"
-        android:visibility="gone"
         android:contentDescription="@string/app_name" />
 
     <TextView

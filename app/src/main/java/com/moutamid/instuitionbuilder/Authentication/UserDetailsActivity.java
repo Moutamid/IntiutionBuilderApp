@@ -22,8 +22,6 @@ import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
-import java.util.Objects;
-
 public class UserDetailsActivity extends AppCompatActivity {
     private EditText name;
     RadioGroup radio_group;
@@ -67,42 +65,44 @@ public class UserDetailsActivity extends AppCompatActivity {
                     name.setError("Enter Name");
                 } else if (gender.equals("not")) {
                     Toast.makeText(UserDetailsActivity.this, "Please select gender", Toast.LENGTH_SHORT).show();
-                }  else if(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
+                } else
+                {
+//                if(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
                     Stash.put("name", name.getText().toString());
-                    Stash.put("gender", gender);
-                    userDetails.setName(name.getText().toString());
-                    userDetails.setGender(gender);
-                    databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                switch (gender) {
-                                    case "Male":
-                                        startActivity(new Intent(UserDetailsActivity.this, MaleProfileSelectActivity.class));
-                                        finish();
-                                        break;
-                                    case "Female":
-                                        startActivity(new Intent(UserDetailsActivity.this, ProfileSelectActivity.class));
-                                        finish();
-                                        break;
-                                    case "Not Preferred":
-                                        Stash.put("image_path", R.drawable.blank_image);
-                                        startActivity(new Intent(UserDetailsActivity.this, WalkThroughActivity.class));
-                                        finish();
-                                        break;
-                                }
-                            } else {
-                                Toast.makeText(UserDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                Stash.put("gender", gender);
+                userDetails.setName(name.getText().toString());
+                userDetails.setGender(gender);
+                databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            switch (gender) {
+                                case "Male":
+                                    startActivity(new Intent(UserDetailsActivity.this, MaleProfileSelectActivity.class));
+                                    finish();
+                                    break;
+                                case "Female":
+                                    startActivity(new Intent(UserDetailsActivity.this, ProfileSelectActivity.class));
+                                    finish();
+                                    break;
+                                case "Not Preferred":
+                                    Stash.put("image_path", R.drawable.blank_image);
+                                    startActivity(new Intent(UserDetailsActivity.this, WalkThroughActivity.class));
+                                    finish();
+                                    break;
                             }
+                        } else {
+                            Toast.makeText(UserDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                         }
-                    });
+                    }
+                });
 
 
-                }
-                else  {
-                    Toast.makeText(UserDetailsActivity.this, "Please verify your email", Toast.LENGTH_SHORT).show();
-                }
-            }
+                                       }
+//                else  {
+//                    Toast.makeText(UserDetailsActivity.this, "Please verify your email", Toast.LENGTH_SHORT).show();
+//                }
+    }
         });
 
     }

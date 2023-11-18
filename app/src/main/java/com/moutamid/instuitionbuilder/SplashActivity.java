@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.fxn.stash.Stash;
 import com.google.firebase.auth.FirebaseAuth;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
+import com.moutamid.instuitionbuilder.Authentication.OnBoarding.OnBoardingActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.onboadingOne.OnBoardingDesignOne;
@@ -46,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
-                    Intent i = new Intent(SplashActivity.this, OnBoardingDesignOne.class);
+                    Intent i = new Intent(SplashActivity.this, OnBoardingActivity.class);
                     startActivity(i);
                     finish();
                 }

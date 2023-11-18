@@ -95,32 +95,39 @@ public class ScoreRankingActivity extends AppCompatActivity {
         }
         Collections.sort(newList, Collections.reverseOrder());
         for (int j = 0; j < newList.size(); j++) {
-            Log.d("streak", "1"+newList.get(3).toString());
-            Log.d("streak", "2"+newList.get(2).toString());
-            Log.d("streak", "3" +newList.get(1).toString());
-            Log.d("streak", "4"+newList.get(0).toString());
 
-            if (j == 0) {
+//            if(j==0)
+            Log.d("streak", j+"     "+   newList.get(j).toString());
+//            Log.d("streak", "2"+newList.get(2).toString());
+//            Log.d("streak", "3" +newList.get(1).toString());
+//            Log.d("streak", "4"+newList.get(0).toString());
 
+            if (j == 5) {
                 layout1.setVisibility(View.VISIBLE);
                 img1.setImageResource(R.drawable.img_1);
-                rank1.setText("X" + newList.get(3).toString());
+            } else if (j == 8) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 13) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 21) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 34) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 55) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 87) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
+            } else if (j == 144) {
+                layout1.setVisibility(View.VISIBLE);
+                img1.setImageResource(R.drawable.img_1);
             }
-            if (j == 1) {
-                layout2.setVisibility(View.VISIBLE);
-                img2.setImageResource(R.drawable.img_2);
-                rank2.setText("X" + newList.get(2).toString());
-            }
-            if (j == 2) {
-                layout3.setVisibility(View.VISIBLE);
-                img3.setImageResource(R.drawable.img_3);
-                rank3.setText("X" + newList.get(1).toString());
-            }
-            if (j == 3) {
-                layout4.setVisibility(View.VISIBLE);
-                img4.setImageResource(R.drawable.img_4);
-                rank4.setText("X" + newList.get(0).toString());
-            }
+
         }
 
         progressBar = findViewById(R.id.progressBar);

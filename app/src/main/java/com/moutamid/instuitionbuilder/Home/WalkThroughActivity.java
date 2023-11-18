@@ -1,6 +1,7 @@
 package com.moutamid.instuitionbuilder.Home;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -24,6 +25,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.masoudss.lib.WaveformSeekBar;
 import com.moutamid.instuitionbuilder.R;
+import com.moutamid.instuitionbuilder.config.RankManager;
 import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
@@ -41,7 +43,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     View view1;
     boolean touch = false;
     private TextView timerText;
-
+    private RankManager rankManager;
     ArrayList<String> stringList = new ArrayList<>();
     TextView buttonOnBoardingAction;
     //    VoicePlayerView voicePlayerView;
@@ -82,6 +84,12 @@ public class WalkThroughActivity extends AppCompatActivity {
         user_name.setText(Stash.getString("name"));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        // Create RankManager instance
+        SharedPreferences preferences = getSharedPreferences("appUsage", MODE_PRIVATE);
+        rankManager = new RankManager(preferences);
+
+        // Check for rank attainment on app launch
+        rankManager.checkRankAttainment();
         mediaPlayer = MediaPlayer.create(this, R.raw.cat);
         timer = new
 
@@ -277,6 +285,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        rankManager.updateLastUsageDate();
 
     }
 

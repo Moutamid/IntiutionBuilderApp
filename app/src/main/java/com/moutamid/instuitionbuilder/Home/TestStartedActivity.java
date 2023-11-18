@@ -25,6 +25,7 @@ import com.moutamid.instuitionbuilder.Model.SteakModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
+import com.moutamid.instuitionbuilder.config.RankManager;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -169,9 +170,7 @@ public class TestStartedActivity extends AppCompatActivity {
                 String expectedText = expectedTextList.get(enteredTextList.size() - 1);
                 if (userEnteredText.equals(expectedText)) {
                     // User entered the correct text
-                    streak++;
-                    Stash.put("streak", streak);
-                    attempts.add(score);
+                     attempts.add(score);
 
                 } else {
                     userArrayList.add(new SteakModel(streak));
@@ -181,6 +180,9 @@ public class TestStartedActivity extends AppCompatActivity {
 
                 }
                 if (expectedTextList.contains(userEnteredText)) {
+                    RankManager.updateStreak(true);
+                    streak++;
+                    Stash.put("streak", streak);
                     score++;
                 }
                 currentTextIndex++;
