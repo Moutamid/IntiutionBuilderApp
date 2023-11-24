@@ -92,7 +92,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                         else
                         {
                             viewPager.setCurrentItem(position + 1);
-
                         }
                     }
                 });

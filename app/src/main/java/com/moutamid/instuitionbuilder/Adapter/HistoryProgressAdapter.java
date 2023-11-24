@@ -52,6 +52,7 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
                 Intent intent = new Intent(ctx, ScoreRankingActivity.class);
                 Stash.put("rating", holder.ratingBar.getRating());
                 Stash.put("progress", progress);
+
                 Stash.put("key", videoModel.getKey());
                 ctx.startActivity(intent);
 //                Toast.makeText(ctx, "Something went wrong", Toast.LENGTH_SHORT).show();

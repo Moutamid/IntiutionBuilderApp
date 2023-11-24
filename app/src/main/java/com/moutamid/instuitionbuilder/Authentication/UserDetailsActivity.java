@@ -67,6 +67,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                     Toast.makeText(UserDetailsActivity.this, "Please select gender", Toast.LENGTH_SHORT).show();
                 } else
                 {
+
 //                if(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
                     Stash.put("name", name.getText().toString());
                 Stash.put("gender", gender);

@@ -59,7 +59,6 @@ import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private RelativeLayout mButtonFacebook;
-
     private CallbackManager callbackManager;
     private LoginManager loginManager;
     private FirebaseAuth mAuth;

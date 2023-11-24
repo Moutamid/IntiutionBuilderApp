@@ -116,7 +116,6 @@ public class EnterPasswordActivity extends AppCompatActivity {
                                                 Intent intent = new Intent(EnterPasswordActivity.this, UserDetailsActivity.class);
                                                 intent.putExtra("email", email);
                                                 startActivity(intent);
-//
                                             } else {
                                                 Toast.makeText(EnterPasswordActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                                             }

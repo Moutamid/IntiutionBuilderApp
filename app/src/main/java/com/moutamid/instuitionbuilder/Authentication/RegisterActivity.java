@@ -19,7 +19,6 @@ public class RegisterActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
 
     }
-
     public void login(View view) {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
 

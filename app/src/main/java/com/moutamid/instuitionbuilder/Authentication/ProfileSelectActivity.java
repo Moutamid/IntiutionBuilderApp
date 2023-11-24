@@ -13,7 +13,6 @@ import com.moutamid.instuitionbuilder.R;
 
 public class ProfileSelectActivity extends AppCompatActivity {
     RoundedImageView male_2, male_1, male_3, male_4;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

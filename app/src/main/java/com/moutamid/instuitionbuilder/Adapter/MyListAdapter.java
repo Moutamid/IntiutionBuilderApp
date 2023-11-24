@@ -15,9 +15,7 @@ import android.widget.Toast;
 
 public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder>{
     private AnimalNameModel[] listdata;
-
-    // RecyclerView recyclerView;  
-    public MyListAdapter(AnimalNameModel[] listdata) {
+  public MyListAdapter(AnimalNameModel[] listdata) {
         this.listdata = listdata;
     }
     @Override

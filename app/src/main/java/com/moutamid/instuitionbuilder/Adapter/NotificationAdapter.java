@@ -39,7 +39,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         NotificationModel notificationModel = notificationModelList.get(position);
         holder.notification_txt.setText(notificationModel.message);
         holder.date.setText(notificationModel.date );
-
     }
 
     @Override
