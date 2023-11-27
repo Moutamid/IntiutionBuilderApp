@@ -41,6 +41,7 @@ public class StatChartActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     LineChartView lineChartView;
+
     private List<Integer> yAxisDataList = new ArrayList<>();
     String color_graph = "#3DB65E";
     String red_color = "#E91E63";

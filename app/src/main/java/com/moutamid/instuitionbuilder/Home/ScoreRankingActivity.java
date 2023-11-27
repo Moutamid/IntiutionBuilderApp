@@ -94,41 +94,51 @@ public class ScoreRankingActivity extends AppCompatActivity {
             }
         }
         Collections.sort(newList, Collections.reverseOrder());
-        for (int j = 0; j < newList.size(); j++) {
-
+//        for (int j = 0; j < newList.size(); j++) {
+//
 //            if(j==0)
-            Log.d("streak", j+"     "+   newList.get(j).toString());
+//            Log.d("streak", j+"     "+   newList.get(j).toString());
 //            Log.d("streak", "2"+newList.get(2).toString());
 //            Log.d("streak", "3" +newList.get(1).toString());
 //            Log.d("streak", "4"+newList.get(0).toString());
-
-            if (j == 5) {
+//1. Charging (like charging up power) *5 streak*
+//2. Potential (potential energy) *8 streak*
+//3. Containing light *13 streak*
+//4. Streaming light *21 streak*
+//5. Wielder of Light (like wielding a sword) *34 streak*
+//6. Possessed by the Light *55 streak
+//7. Creator of worlds *87 streak*
+//8. Key to the gates of heaven *144 streak*
+            if (newList.contains(5)) {
                 layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 8) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 13) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 21) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 34) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 55) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 87) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
-            } else if (j == 144) {
-                layout1.setVisibility(View.VISIBLE);
-                img1.setImageResource(R.drawable.img_1);
+                img1.setImageResource(R.drawable.charging);
+            } else if (newList.contains(8)) {
+                layout2.setVisibility(View.VISIBLE);
+                img2.setImageResource(R.drawable.potential);
+            } else if (newList.contains(13)) {
+                layout3.setVisibility(View.VISIBLE);
+                img3.setImageResource(R.drawable.containg_light);
+            } else if (newList.contains(21)) {
+                layout4.setVisibility(View.VISIBLE);
+                img4.setImageResource(R.drawable.streaming_light);
             }
 
-        }
+    //        TODO
+//            else if (j == 34) {
+//                layout5.setVisibility(View.VISIBLE);
+//                img5.setImageResource(R.drawable.wielder_of_light);
+//            } else if (j == 55) {
+//                layout1.setVisibility(View.VISIBLE);
+//                img1.setImageResource(R.drawable.img_1);
+//            } else if (j == 87) {
+//                layout1.setVisibility(View.VISIBLE);
+//                img1.setImageResource(R.drawable.img_1);
+//            } else if (j == 144) {
+//                layout1.setVisibility(View.VISIBLE);
+//                img1.setImageResource(R.drawable.img_1);
+//            }
+
+//        }
 
         progressBar = findViewById(R.id.progressBar);
         score_txt = findViewById(R.id.score);

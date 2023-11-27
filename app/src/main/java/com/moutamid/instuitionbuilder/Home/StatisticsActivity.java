@@ -58,6 +58,7 @@ RecyclerView content_rcv;
         progressAdapter = new ProgressAdapter(StatisticsActivity.this, progressModelList);
         content_rcv.setAdapter(progressAdapter);
         if (Config.isNetworkAvailable(StatisticsActivity.this)) {
+
             getProducts();
         } else {
             Toast.makeText(this, "No network connection available.", Toast.LENGTH_SHORT).show();

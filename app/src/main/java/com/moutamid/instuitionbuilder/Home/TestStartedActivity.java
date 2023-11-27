@@ -78,18 +78,9 @@ public class TestStartedActivity extends AppCompatActivity {
 
         // Initialize the expected text list
         expectedTextList = new ArrayList<>();
-        // Add your expected texts to the list
-
-        expectedTextList.add("cat");
-        expectedTextList.add("dog");
-        expectedTextList.add("tiger");
-        expectedTextList.add("rat");
-        expectedTextList.add("horse");
-        expectedTextList.add("lion");
-        expectedTextList.add("fish");
-        expectedTextList.add("elephant");
-        expectedTextList.add("deer");
-        expectedTextList.add("monkey");
+        for (int j=0; j<Config.dataArrayList().size(); j++) {
+            expectedTextList.add(Config.dataArrayList().get(j).text.toString());
+        }
         enteredTextList = new ArrayList<>();
         attempts = new ArrayList<>();
 
@@ -142,8 +133,7 @@ public class TestStartedActivity extends AppCompatActivity {
     private void showNextText() {
         if (currentTextIndex < expectedTextList.size()) {
             String currentText = expectedTextList.get(currentTextIndex);
-            // Set the current text in some TextView or handle accordingly
-            // ...
+
         } else {
             final int sdk = android.os.Build.VERSION.SDK_INT;
             if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
@@ -161,12 +151,8 @@ public class TestStartedActivity extends AppCompatActivity {
         String userEnteredText = userInput.getText().toString().trim().toLowerCase(); // Convert to lowercase for case-insensitive comparison
         if (!userEnteredText.isEmpty()) {
             if (enteredTextList.size() < expectedTextList.size()) {
-                // Add the entered text to the list
                 enteredTextList.add(userEnteredText);
-                // Update the entered text ListView
                 updateEnteredTextList();
-
-                // Compare the entered text with the expected text
                 String expectedText = expectedTextList.get(enteredTextList.size() - 1);
                 if (userEnteredText.equals(expectedText)) {
                     // User entered the correct text

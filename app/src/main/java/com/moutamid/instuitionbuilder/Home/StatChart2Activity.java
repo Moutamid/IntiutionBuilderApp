@@ -25,6 +25,7 @@ public class StatChart2Activity extends AppCompatActivity {
     LineChartView lineChartView;
     String[] axisData = {"", "", "", "", "", "", "", "", ""};
     int[] yAxisData = {0, 10, 53, 77, 65, 88, 35, 52, 58, 92};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

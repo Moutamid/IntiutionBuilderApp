@@ -14,8 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.OnBoarding.OnBoardingActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
+import com.moutamid.instuitionbuilder.Home.IntroActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
-import com.moutamid.instuitionbuilder.onboadingOne.OnBoardingDesignOne;
 
 
 public class SplashActivity extends AppCompatActivity {
@@ -43,8 +43,13 @@ public class SplashActivity extends AppCompatActivity {
                                     finish();
                                 }
                     } else {
-                        startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                        finish();
+                        if (Stash.getString("video_seen").equals("yes")) {
+                            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(SplashActivity.this, IntroActivity.class));
+                            finish();
+                        }
                     }
                 } else {
                     Intent i = new Intent(SplashActivity.this, OnBoardingActivity.class);

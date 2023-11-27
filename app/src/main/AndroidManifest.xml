@@ -19,7 +19,7 @@
             android:name=".Authentication.OnBoarding.OnBoardingActivity"
             android:exported="true" />
         <activity
-            android:name=".Home.DummyActivity"
+            android:name=".Home.IntroActivity"
             android:exported="true">
 
         </activity>
@@ -83,7 +83,6 @@
             android:theme="@style/AppTheme.FOUR">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

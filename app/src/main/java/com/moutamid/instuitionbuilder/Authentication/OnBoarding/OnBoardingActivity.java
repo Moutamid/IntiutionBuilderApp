@@ -14,13 +14,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.fxn.stash.Stash;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
+import com.moutamid.instuitionbuilder.Home.IntroActivity;
 import com.moutamid.instuitionbuilder.R;
 
 import java.util.ArrayList;
@@ -82,12 +83,18 @@ public class OnBoardingActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         if (position == 2) {
-//                            SharedPreferences preferences = getSharedPreferences("Record", Context.MODE_PRIVATE);
-//                            SharedPreferences.Editor editor = preferences.edit();
-//                            editor.putString("boarding_view", "yes");
-//                            editor.apply();
-                            startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
-                            finishAffinity();
+                            SharedPreferences preferences = getSharedPreferences("Record", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("boarding_view", "yes");
+                            editor.apply();
+                            if (Stash.getString("video_seen").equals("yes")) {
+                                startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
+                                finish();
+                            }
+                            else {
+                                startActivity(new Intent(OnBoardingActivity.this, IntroActivity.class));
+                                finish();
+                            }
                         }
                         else
                         {

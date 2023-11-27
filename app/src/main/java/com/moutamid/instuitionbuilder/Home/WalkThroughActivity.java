@@ -9,8 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.StrictMode;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -25,11 +23,11 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.masoudss.lib.WaveformSeekBar;
 import com.moutamid.instuitionbuilder.R;
+import com.moutamid.instuitionbuilder.config.Config;
 import com.moutamid.instuitionbuilder.config.RankManager;
 import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -49,7 +47,6 @@ public class WalkThroughActivity extends AppCompatActivity {
     //    VoicePlayerView voicePlayerView;
     RelativeLayout audio;
     TextView textView;
-    String name = "Elephant";
     CircleImageView dp;
     TextView user_name, animal_name;
     RoundedImageView animal_image;
@@ -58,6 +55,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     private CountDownTimer timer;
     TextView questionText;
     ImageView notification;
+    int current_position = 0;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +85,11 @@ public class WalkThroughActivity extends AppCompatActivity {
         // Create RankManager instance
         SharedPreferences preferences = getSharedPreferences("appUsage", MODE_PRIVATE);
         rankManager = new RankManager(preferences);
-
+        animal_name.setText("Church");
+        animal_image.setImageResource(R.drawable.church);
         // Check for rank attainment on app launch
         rankManager.checkRankAttainment();
-        mediaPlayer = MediaPlayer.create(this, R.raw.cat);
+        mediaPlayer = MediaPlayer.create(this, R.raw.church);
         timer = new
 
                 CountDownTimer(60000, 1000) {
@@ -108,7 +107,7 @@ public class WalkThroughActivity extends AppCompatActivity {
                 }.
 
                 start();
-        waveformSeekBar.setSampleFrom(R.raw.cat);
+        waveformSeekBar.setSampleFrom(R.raw.church);
 
         //playing media
 
@@ -144,16 +143,45 @@ public class WalkThroughActivity extends AppCompatActivity {
         gallery_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                animal_image.setImageResource(Config.dataArrayList().get(current_position).image);
+
+                audio.setVisibility(View.GONE);
+
                 gallery.setVisibility(View.VISIBLE);
             }
         });
         audio_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                gallery.setVisibility(View.GONE);
+                animal_name.setText(Config.dataArrayList().get(current_position).text);
+                mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, Config.dataArrayList().get(current_position).audio);
+
+                waveformSeekBar.setSampleFrom(Config.dataArrayList().get(current_position).audio);
+                int duration = mediaPlayer.getDuration();
+                int seconds = duration / 1000;
+                int minutes = seconds / 60;
+                if (seconds == 0) {
+                    textView.setText("00:01");
+
+                } else {
+// Format the duration as HH:MM:SS
+                    String formattedDuration = String.format("%02d:%02d", minutes % 60, seconds % 60);
+                    textView.setText(formattedDuration + "");
+                }
+// Now 'formattedDuration' contains the total duration in HH:MM:SS format
+
                 audio.setVisibility(View.VISIBLE);
             }
         });
-
+mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+        pause_icon.setVisibility(View.GONE);
+        play_icon.setVisibility(View.VISIBLE);
+    }
+});
         NumberPicker numberPicker = findViewById(R.id.number_picker);
 
 
@@ -173,11 +201,18 @@ public class WalkThroughActivity extends AppCompatActivity {
         // Set typeface
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
-        String[] data = {"Cat", "Dog", "Tiger", "Rat", "Horse", "Lion", "Fish", "Elephant", "Deer", "Monkey"};
+
+
+        String[] displayedValues = new String[Config.dataArrayList().size()];
+
+        for (int i = 0; i < Config.dataArrayList().size(); i++) {
+            displayedValues[i] = Config.dataArrayList().get(i).text.toString();
+        }
+
         numberPicker.setMinValue(1);
         numberPicker.setValue(1);
-        numberPicker.setMaxValue(data.length);
-        numberPicker.setDisplayedValues(data);
+        numberPicker.setMaxValue(displayedValues.length);
+        numberPicker.setDisplayedValues(displayedValues);
         numberPicker.setFadingEdgeEnabled(true);
         numberPicker.setFadingEdgeStrength(80);
         numberPicker.setScrollerEnabled(true);
@@ -185,14 +220,7 @@ public class WalkThroughActivity extends AppCompatActivity {
         numberPicker.setAccessibilityDescriptionEnabled(true);
         numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
 
-        numberPicker.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                touch = true;
-                return false;
-            }
-        });
-//
+
         numberPicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -214,55 +242,8 @@ public class WalkThroughActivity extends AppCompatActivity {
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                // Your code
-//                final Handler handler = new Handler(Looper.getMainLooper());
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
-//                        view1.setVisibility(View.VISIBLE);
-//                        final int sdk = android.os.Build.VERSION.SDK_INT;
-//                        if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-//                            buttonOnBoardingAction.setTextColor(Color.WHITE);
-//                            buttonOnBoardingAction.setBackgroundDrawable(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-//                        } else {
-//                            buttonOnBoardingAction.setTextColor(Color.WHITE);
-//                            buttonOnBoardingAction.setBackground(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-//                        }
-//                        if (touch) {
-//                            try {
-                                questionText.setText(newVal+"/"+data.length);
-                                touch = false;
-                                name = data[newVal - 1].toString();
-//                                Toast.makeText(WalkThroughActivity.this, "name"+ name, Toast.LENGTH_SHORT).show();
-                                Log.d("TAG", String.format(Locale.US, "oldVal: %d, newVal: %d", oldVal, newVal));
-//                                buttonOnBoardingAction.setText(name);
-                                switch (name) {
-                                    case "Cat":
-                                        animal_image.setImageResource(R.drawable.cat);
-                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.cat);
-                                        break;
-                                    case "Tiger":
-                                        animal_image.setImageResource(R.drawable.tiger);
-                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.tiger);
-                                        break;
-                                    case "Elephant":
-                                        animal_image.setImageResource(R.drawable.elephant);
-                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.elephant);
-                                        break;
-                                    case "Dog":
-                                        animal_image.setImageResource(R.drawable.dog);
-                                        mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, R.raw.dog);
-                                        break;
-                                }
-////                                Thread.sleep(900);
-//                            } catch (Exception e) {
-//                                Log.d("Exception", e.getMessage().toString());
-//                            }
-//                        }
-//                    }
-//                }, 2000);
-
+                current_position = newVal - 1;
+                questionText.setText(newVal + "/" + Config.dataArrayList().size());
             }
         });
 
