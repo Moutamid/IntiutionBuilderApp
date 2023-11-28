@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,10 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.masoudss.lib.WaveformSeekBar;
 import com.moutamid.instuitionbuilder.R;
+import com.moutamid.instuitionbuilder.config.CompleteDialogClass;
 import com.moutamid.instuitionbuilder.config.Config;
 import com.moutamid.instuitionbuilder.config.RankManager;
+import com.moutamid.instuitionbuilder.config.SubscribeDialogClass;
 import com.shawnlin.numberpicker.NumberPicker;
 
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     TextView questionText;
     ImageView notification;
     int current_position = 0;
+    ImageView badge;
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class WalkThroughActivity extends AppCompatActivity {
         setContentView(R.layout.activity_walk_through);
         waveformSeekBar = findViewById(R.id.wave);
         notification = findViewById(R.id.notification);
+        badge = findViewById(R.id.badge);
         dp = findViewById(R.id.dp);
         animal_image = findViewById(R.id.animal_image);
         timerText = findViewById(R.id.timerText);
@@ -77,7 +82,7 @@ public class WalkThroughActivity extends AppCompatActivity {
         play_icon = findViewById(R.id.play);
         pause_icon = findViewById(R.id.pause);
         questionText = findViewById(R.id.questionText);
-        questionText.setText("1/10");
+
         dp.setImageResource(Stash.getInt("image_path"));
         user_name.setText(Stash.getString("name"));
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -87,7 +92,6 @@ public class WalkThroughActivity extends AppCompatActivity {
         rankManager = new RankManager(preferences);
         animal_name.setText("Church");
         animal_image.setImageResource(R.drawable.church);
-        // Check for rank attainment on app launch
         rankManager.checkRankAttainment();
         mediaPlayer = MediaPlayer.create(this, R.raw.church);
         timer = new
@@ -109,8 +113,14 @@ public class WalkThroughActivity extends AppCompatActivity {
                 start();
         waveformSeekBar.setSampleFrom(R.raw.church);
 
-        //playing media
+        badge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(WalkThroughActivity.this, BadgeActivity.class));
 
+                timer.cancel();
+            }
+        });
 
         play_icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,35 +154,40 @@ public class WalkThroughActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                animal_image.setImageResource(Config.dataArrayList().get(current_position).image);
-
-                audio.setVisibility(View.GONE);
-
-                gallery.setVisibility(View.VISIBLE);
+                if (Stash.getString("first_time").equals("yes")) {
+                    animal_image.setImageResource(Config.dataArrayList().get(current_position).image);
+                    audio.setVisibility(View.GONE);
+                    gallery.setVisibility(View.VISIBLE);
+                } else {
+                    SubscribeDialogClass completeDialogClass = new SubscribeDialogClass(WalkThroughActivity.this);
+                    completeDialogClass.show();
+                }
             }
         });
         audio_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                gallery.setVisibility(View.GONE);
-                animal_name.setText(Config.dataArrayList().get(current_position).text);
-                mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, Config.dataArrayList().get(current_position).audio);
+                if (Stash.getString("first_time").equals("yes")) {
 
-                waveformSeekBar.setSampleFrom(Config.dataArrayList().get(current_position).audio);
-                int duration = mediaPlayer.getDuration();
-                int seconds = duration / 1000;
-                int minutes = seconds / 60;
-                if (seconds == 0) {
-                    textView.setText("00:01");
+                    gallery.setVisibility(View.GONE);
+                    animal_name.setText(Config.dataArrayList().get(current_position).text);
+                    mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, Config.dataArrayList().get(current_position).audio);
 
+                    waveformSeekBar.setSampleFrom(Config.dataArrayList().get(current_position).audio);
+                    int duration = mediaPlayer.getDuration();
+                    int seconds = duration / 1000;
+                    int minutes = seconds / 60;
+                    if (seconds == 0) {
+                        textView.setText("00:01");
+
+                    } else {
+                        String formattedDuration = String.format("%02d:%02d", minutes % 60, seconds % 60);
+                        textView.setText(formattedDuration + "");
+                    }
+                    audio.setVisibility(View.VISIBLE);
                 } else {
-// Format the duration as HH:MM:SS
-                    String formattedDuration = String.format("%02d:%02d", minutes % 60, seconds % 60);
-                    textView.setText(formattedDuration + "");
-                }
-// Now 'formattedDuration' contains the total duration in HH:MM:SS format
-
-                audio.setVisibility(View.VISIBLE);
+                    SubscribeDialogClass completeDialogClass = new SubscribeDialogClass(WalkThroughActivity.this);
+                    completeDialogClass.show();                }
             }
         });
 mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -200,14 +215,26 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
         // Set typeface
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
+        String[] displayedValues;
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
+        if (Stash.getString("first_time").equals("no")) {
 
+            questionText.setText("1/" + Config.secondRoundDataArrayList().size());
+            displayedValues = new String[Config.secondRoundDataArrayList().size()];
+            for (int i = 0; i < Config.secondRoundDataArrayList().size(); i++) {
+                displayedValues[i] = Config.secondRoundDataArrayList().get(i).text.toString();
+            }
+        } else {
+            questionText.setText("1/" + Config.dataArrayList().size());
 
-        String[] displayedValues = new String[Config.dataArrayList().size()];
+            displayedValues = new String[Config.dataArrayList().size()];
 
-        for (int i = 0; i < Config.dataArrayList().size(); i++) {
-            displayedValues[i] = Config.dataArrayList().get(i).text.toString();
+            for (int i = 0; i < Config.dataArrayList().size(); i++) {
+                displayedValues[i] = Config.dataArrayList().get(i).text.toString();
+            }
+
         }
+
 
         numberPicker.setMinValue(1);
         numberPicker.setValue(1);
@@ -243,7 +270,11 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 current_position = newVal - 1;
-                questionText.setText(newVal + "/" + Config.dataArrayList().size());
+                if (Stash.getString("first_time").equals("no")) {
+                    questionText.setText(newVal + "/" + Config.secondRoundDataArrayList().size());
+                } else {
+                    questionText.setText(newVal + "/" + Config.dataArrayList().size());
+                }
             }
         });
 
@@ -261,12 +292,14 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         play_icon.setVisibility(View.VISIBLE);
         pause_icon.setVisibility(View.GONE);
         waveformSeekBar.setProgress(0);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         rankManager.updateLastUsageDate();
+        timer.start();
 
     }
 

@@ -2,19 +2,17 @@ package com.moutamid.instuitionbuilder.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fxn.stash.Stash;
 import com.moutamid.instuitionbuilder.Home.ScoreRankingActivity;
-import com.moutamid.instuitionbuilder.Home.StatChartActivity;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
@@ -45,6 +43,13 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
         float progress = Float.parseFloat(videoModel.getProgress());
         float rating = (progress / 100.0f) * maxRating;
         holder.ratingBar.setRating(rating);
+        holder.ratingBar.setIsIndicator(true);
+        if (position % 2 == 0) {
+            holder.circle.setImageResource(R.drawable.pie2);
+        }
+        if (position % 5 == 0) {
+            holder.circle.setImageResource(R.drawable.pie3);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +57,6 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
                 Intent intent = new Intent(ctx, ScoreRankingActivity.class);
                 Stash.put("rating", holder.ratingBar.getRating());
                 Stash.put("progress", progress);
-
                 Stash.put("key", videoModel.getKey());
                 ctx.startActivity(intent);
 //                Toast.makeText(ctx, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -68,10 +72,12 @@ public class HistoryProgressAdapter extends RecyclerView.Adapter<HistoryProgress
     public class GalleryPhotosViewHolder extends RecyclerView.ViewHolder {
 
         RatingBar ratingBar;
+        ImageView circle;
 
         public GalleryPhotosViewHolder(@NonNull View itemView) {
             super(itemView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
+            circle = itemView.findViewById(R.id.circle);
 
         }
     }

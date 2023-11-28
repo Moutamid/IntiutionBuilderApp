@@ -112,7 +112,7 @@ public class EnterPasswordActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
                                                 Stash.put("user_id", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                                Toast.makeText(getApplicationContext(), "Please verify your email", Toast.LENGTH_LONG).show();
+//                                                Toast.makeText(getApplicationContext(), "Please verify your email", Toast.LENGTH_LONG).show();
                                                 Intent intent = new Intent(EnterPasswordActivity.this, UserDetailsActivity.class);
                                                 intent.putExtra("email", email);
                                                 startActivity(intent);

@@ -224,6 +224,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:890062472575:android:7186612db29caa0904464a",
+        "android_client_info": {
+          "package_name": "com.moutamid.grocify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "890062472575-05ue90j9694eg6eorj1lhjoknkj3oqja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyGSYphpIh40M7fze_LUKzkSi4dDG8OQY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "890062472575-05ue90j9694eg6eorj1lhjoknkj3oqja.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "890062472575-n82emgghjp5pqgv9hijtnabvrp5btuco.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.torashare.ToraShare"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:890062472575:android:af41bdedc4a3a97404464a",
         "android_client_info": {
           "package_name": "com.moutamid.halalfoodadmin"

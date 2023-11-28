@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -12,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fxn.stash.Stash;
-import com.moutamid.instuitionbuilder.Home.StatChartActivity;
+import com.moutamid.instuitionbuilder.Home.ScoreRankingActivity;
 import com.moutamid.instuitionbuilder.Model.ProgressModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
@@ -45,12 +46,18 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Galler
         float progress = Float.parseFloat(videoModel.getProgress());
         float rating = (progress / 100.0f) * maxRating;
         holder.ratingBar.setRating(rating);
+        holder.ratingBar.setIsIndicator(true);
+        if (position % 2 == 0) {
+            holder.circle.setImageResource(R.drawable.pie2);
+        }
+        if (position % 5 == 0) {
+            holder.circle.setImageResource(R.drawable.pie3);
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ctx, StatChartActivity.class);
-
+                Intent intent = new Intent(ctx, ScoreRankingActivity.class);
                 intent.putExtra("key", videoModel.getKey());
                 intent.putExtra("progress", rating);
                 Stash.put("rating", holder.ratingBar.getRating());
@@ -67,11 +74,13 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Galler
     public class GalleryPhotosViewHolder extends RecyclerView.ViewHolder {
 
         RatingBar ratingBar;
+        ImageView circle;
 
         public GalleryPhotosViewHolder(@NonNull View itemView) {
             super(itemView);
             ratingBar = itemView.findViewById(R.id.ratingBar);
 
+            circle = itemView.findViewById(R.id.circle);
 
         }
     }

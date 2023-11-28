@@ -9,6 +9,8 @@ public class UserDetails {
     boolean isverified;
     private List<Integer> numbers;
 
+    String streak;
+
     public String getCode() {
         return code;
     }
@@ -88,5 +90,13 @@ public class UserDetails {
 
     public void setProgress(String progress) {
         this.progress = progress;
+    }
+
+    public String getStreak() {
+        return streak;
+    }
+
+    public void setStreak(String streak) {
+        this.streak = streak;
     }
 }

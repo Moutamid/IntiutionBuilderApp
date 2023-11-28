@@ -69,11 +69,21 @@
                 android:layout_height="34dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="30dp"
-                android:layout_marginRight="30dp"
+                android:layout_marginRight="80dp"
                 android:background="@drawable/btn_bg"
                 android:backgroundTint="#838282"
                 android:padding="8dp"
                 android:src="@drawable/notifcation" />
+
+            <ImageView
+                android:id="@+id/badge"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="30dp"
+                 android:src="@drawable/medal"
+               />
 
         </RelativeLayout>
 
@@ -102,7 +112,6 @@
                     android:fontFamily="@font/inter_medium"
                     android:text="10/06"
 
-                    android:layout_below="@id/scoreText"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
 

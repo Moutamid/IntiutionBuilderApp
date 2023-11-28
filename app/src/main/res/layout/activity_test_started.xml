@@ -60,6 +60,7 @@
                 android:layout_marginRight="30dp"
                 android:background="@drawable/btn_bg"
                 android:backgroundTint="#838282"
+                android:visibility="gone"
                 android:padding="8dp"
                 android:src="@drawable/notifcation" />
 

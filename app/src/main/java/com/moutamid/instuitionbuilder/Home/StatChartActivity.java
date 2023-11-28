@@ -20,9 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import com.moutamid.instuitionbuilder.Adapter.HistoryProgressAdapter;
-import com.moutamid.instuitionbuilder.Adapter.ProgressAdapter;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
@@ -64,7 +62,7 @@ public class StatChartActivity extends AppCompatActivity {
         ratingBar.setRating(Stash.getFloat("rating"));
         remakrs.setText("Great work remembering the words in the exact order");
         if (Stash.getFloat("rating") != 0) {
-            Config.showProgressDialog(StatChartActivity.this);
+//            Config.showProgressDialog(StatChartActivity.this);
             databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).child("numbers").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -134,6 +132,7 @@ public class StatChartActivity extends AppCompatActivity {
     }
 
     private void getProducts() {
+//        Config.showProgressDialog(StatChartActivity.this);
         DatabaseReference databaseReference1 = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");
         databaseReference1.orderByValue().addValueEventListener(new ValueEventListener() {
             @Override
@@ -144,7 +143,7 @@ public class StatChartActivity extends AppCompatActivity {
                     progressModelList.add(progressModel);
                 }
                 progressAdapter.notifyDataSetChanged();
-                Config.dismissProgressDialog();
+//                Config.dismissProgressDialog();
 
             }
 

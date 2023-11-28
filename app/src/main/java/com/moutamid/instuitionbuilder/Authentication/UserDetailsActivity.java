@@ -71,6 +71,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 //                if(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).isEmailVerified()) {
                     Stash.put("name", name.getText().toString());
                 Stash.put("gender", gender);
+                    Stash.put("first_time", "yes");
                 userDetails.setName(name.getText().toString());
                 userDetails.setGender(gender);
                 databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {

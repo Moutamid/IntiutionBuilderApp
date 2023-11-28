@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".Authentication.LoginActivity">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="350dp"
-                    android:layout_height="350dp"
+                    android:layout_height="250dp"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-90dp"
                     android:background="@drawable/backgrounf"
@@ -53,7 +53,7 @@
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="350dp"
-                    android:layout_height="350dp"
+                    android:layout_height="250dp"
                     android:layout_centerInParent="true"
                     android:layout_marginTop="-90dp"
                     android:background="@drawable/backgrounf"
@@ -77,25 +77,28 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/ranks"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="120sp"
                 android:background="@drawable/btn_bg_normal"
                 android:orientation="horizontal"
                 android:layout_gravity="center"
+                android:backgroundTint="@color/app_color"
                 android:gravity="center"
+
                 android:layout_margin="20dp">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:visibility="gone"
+                    android:layout_marginStart="15dp"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="35dp"
+                        android:layout_width="45dp"
                         android:layout_gravity="center"
-                        android:layout_height="35dp"
+                        android:layout_height="45dp"
                         android:src="@drawable/rank" />
 
                     <TextView
@@ -103,130 +106,25 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_bold"
                         android:textSize="15dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="12dp"
                         android:gravity="center"
-                        android:textColor="@color/white"
-                        android:text="Rank" />
+                        android:textColor="#FFFFFF"
+                        android:text="Streaks" />
                 </LinearLayout>
-          <LinearLayout
-              android:id="@+id/layout1"
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/content_steak"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-              android:visibility="gone"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent"
 
-                    <ImageView
-                        android:id="@+id/img1"
-                        android:layout_width="35dp"
-                        android:layout_gravity="center"
-                        android:layout_height="35dp"
-                        android:src="@drawable/img_1" />
-
-                    <TextView
-                        android:id="@+id/rank1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:textSize="14dp"
-                        android:layout_marginTop="4dp"
-
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:text="x2" />
-                </LinearLayout>
-          <LinearLayout
-              android:id="@+id/layout2"
-android:visibility="gone"
-              android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/img2"
-
-                        android:layout_width="35dp"
-                        android:layout_gravity="center"
-                        android:layout_height="35dp"
-                        android:src="@drawable/img_1" />
-
-                    <TextView
-                        android:id="@+id/rank2"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:textSize="14dp"
-                        android:gravity="center"
-                        android:layout_marginTop="4dp"
-
-                        android:textColor="@color/white"
-                        android:text="x2" />
-                </LinearLayout>
-          <LinearLayout
-              android:id="@+id/layout3"
-android:visibility="gone"
-              android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/img3"
-
-                        android:layout_width="35dp"
-                        android:layout_gravity="center"
-                        android:layout_height="35dp"
-                        android:src="@drawable/img_1" />
-
-                    <TextView
-                        android:id="@+id/rank3"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:textSize="14dp"
-                        android:gravity="center"
-                        android:layout_marginTop="4dp"
-
-                        android:textColor="@color/white"
-                        android:text="x2" />
-                </LinearLayout>
-          <LinearLayout
-              android:id="@+id/layout4"
-              android:visibility="gone"
-              android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/img4"
-                        android:layout_width="35dp"
-                        android:layout_gravity="center"
-                        android:layout_height="35dp"
-                        android:src="@drawable/img_1" />
-
-                    <TextView
-                        android:id="@+id/rank4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:textSize="14dp"
-                        android:gravity="center"
-                        android:layout_marginTop="4dp"
-                        android:textColor="@color/white"
-                        android:text="x2" />
-                </LinearLayout>
-
+                    android:layout_margin="8dp" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/inter_bold"
                 android:text="Stats"
@@ -236,8 +134,9 @@ android:visibility="gone"
             <lecho.lib.hellocharts.view.LineChartView
                 android:id="@+id/chart"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_margin="20dp" />
+                android:layout_height="250dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

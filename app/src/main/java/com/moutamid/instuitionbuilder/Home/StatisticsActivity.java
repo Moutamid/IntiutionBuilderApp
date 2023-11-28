@@ -46,10 +46,12 @@ RecyclerView content_rcv;
 
         int score = getIntent().getIntExtra("score", 0);
         score_txt = findViewById(R.id.score);
-        int totalScore = 10;
+        int totalScore = Config.secondRoundDataArrayList().size();
         percentage = (double) score / totalScore * 100;
         progressBar.setProgress((int) percentage);
-        score_txt.setText(percentage + "%");
+        String formattedNumber = String.format("%.2f", percentage);
+
+        score_txt.setText(formattedNumber + "%");
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
         content_rcv = findViewById(R.id.content_rcv);
@@ -66,9 +68,7 @@ RecyclerView content_rcv;
 
     }
 
-    public void history(View view) {
-        startActivity(new Intent(StatisticsActivity.this, StatChartActivity.class));
-    }
+
 
     private void getProducts() {
         DatabaseReference databaseReference1 = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");

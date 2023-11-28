@@ -10,7 +10,7 @@ public class RankManager {
     private static long firstUsageDate;
     private static  long lastUsageDate;
     private static  int streak;
-    private static String currentRank;
+    public static String currentRank;
 
     public RankManager(SharedPreferences preferences) {
         this.preferences = preferences;
@@ -48,9 +48,6 @@ public class RankManager {
         editor.commit();
         // Notify user of rank achievement
         Log.d("Rank", rank+  "rank");
-//        Toast.makeText(this, "Congratulations! You have achieved the " + rank + " rank!", Toast.LENGTH_LONG).show();
-
-        // Update currentRank variable
         currentRank = rank;
     }
 
@@ -75,7 +72,6 @@ public class RankManager {
         editor.putLong("lastUsageDate", currentDate);
         editor.commit();
 
-        // Check for rank attainment if it's the first time using the app
         if (firstUsageDate == 0) {
             firstUsageDate = currentDate;
             checkRankAttainment();

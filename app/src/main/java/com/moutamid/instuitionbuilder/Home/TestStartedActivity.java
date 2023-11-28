@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -24,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Model.SteakModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
+import com.moutamid.instuitionbuilder.config.CompleteDialogClass;
 import com.moutamid.instuitionbuilder.config.Config;
 import com.moutamid.instuitionbuilder.config.RankManager;
 
@@ -46,14 +48,11 @@ public class TestStartedActivity extends AppCompatActivity {
     private TextView nextButton, next;
     private TextView timerText;
     private ListView enteredTextListView;
-
     private int score = 0;
-
     private CountDownTimer timer;
     CircleImageView dp;
     TextView user_name;
     FirebaseDatabase firebaseDatabase;
-
     DatabaseReference databaseReference;
     UserDetails userDetails;
     View view1;
@@ -78,8 +77,15 @@ public class TestStartedActivity extends AppCompatActivity {
 
         // Initialize the expected text list
         expectedTextList = new ArrayList<>();
-        for (int j=0; j<Config.dataArrayList().size(); j++) {
-            expectedTextList.add(Config.dataArrayList().get(j).text.toString());
+        if (Stash.getString("first_time").equals("no")) {
+
+            for (int j = 0; j < Config.secondRoundDataArrayList().size(); j++) {
+                expectedTextList.add(Config.secondRoundDataArrayList().get(j).text.toLowerCase().toString());
+            }
+        } else {
+            for (int j = 0; j < Config.dataArrayList().size(); j++) {
+                expectedTextList.add(Config.dataArrayList().get(j).text.toLowerCase().toString());
+            }
         }
         enteredTextList = new ArrayList<>();
         attempts = new ArrayList<>();
@@ -150,40 +156,51 @@ public class TestStartedActivity extends AppCompatActivity {
     private void checkUserInput() {
         String userEnteredText = userInput.getText().toString().trim().toLowerCase(); // Convert to lowercase for case-insensitive comparison
         if (!userEnteredText.isEmpty()) {
-            if (enteredTextList.size() < expectedTextList.size()) {
-                enteredTextList.add(userEnteredText);
-                updateEnteredTextList();
-                String expectedText = expectedTextList.get(enteredTextList.size() - 1);
-                if (userEnteredText.equals(expectedText)) {
-                    // User entered the correct text
-                     attempts.add(score);
+            if (!enteredTextList.contains(userEnteredText)) {
+                if (enteredTextList.size() < expectedTextList.size()) {
+                    Log.d("dtaa", "1   " + enteredTextList.size() + "  " + expectedTextList.size());
+                    enteredTextList.add(userEnteredText);
+                    updateEnteredTextList();
+                    String expectedText = expectedTextList.get(enteredTextList.size() - 1);
+                    Log.d("dtaa", "2   " + expectedText);
+                    if (userEnteredText.toLowerCase().equals(expectedText.toLowerCase())) {
+                        Log.d("dtaa", "3   " + userEnteredText + "    " + expectedText);
+                        attempts.add(score + 1);
 
+                    } else {
+                        Log.d("dtaa", "4   " + userEnteredText + "    " + expectedText);
+
+                        userArrayList.add(new SteakModel(streak));
+                        Stash.put("StreakList", userArrayList);
+                        attempts.add(0);
+                        streak = 0;
+
+                    }
+                    if (expectedTextList.contains(userEnteredText)) {
+                        RankManager.updateStreak(true);
+                        streak++;
+                        Stash.put("streak", streak);
+                        score++;
+                        Log.d("dtaa", "5   score" + score + "   " + streak);
+
+                    }
+                    currentTextIndex++;
+                    updateScore();
+                    userInput.getText().clear();
+
+                    // Show the next expected text or handle accordingly
+                    showNextText();
                 } else {
-                    userArrayList.add(new SteakModel(streak));
-                    Stash.put("StreakList", userArrayList);
-                    attempts.add(0);
-                    streak = 0;
-
+                    showToast("Limit exceeded");
                 }
-                if (expectedTextList.contains(userEnteredText)) {
-                    RankManager.updateStreak(true);
-                    streak++;
-                    Stash.put("streak", streak);
-                    score++;
-                }
-                currentTextIndex++;
-                updateScore();
-                userInput.getText().clear();
-
-                // Show the next expected text or handle accordingly
-                showNextText();
             } else {
-                showToast("Limit exceeded");
+                showToast("You already wrote this word");
             }
         }
     }
 
     private void updateScore() {
+
         scoreText.setText(attempts.size()+"/"+expectedTextList.size());
 //        questionText.setText("Answer No. "+ attempts.size()+"/"+expectedTextList.size() );
     }
@@ -202,37 +219,43 @@ public class TestStartedActivity extends AppCompatActivity {
     }
 
     private void handleGameEnd() {
-        userInput.setVisibility(View.GONE);
-        expectedTextList.size();
-        if (score > 0) {
-            int totalScore = expectedTextList.size();
-            double percentage = (double) score / totalScore * 100;
-            Config.showProgressDialog(TestStartedActivity.this);
-            userDetails.setProgress(percentage + "");
-        } else {
-            userDetails.setProgress("0");
-        }
-        DatabaseReference child = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");
-        String key = child.push().getKey();
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
-                Locale.getDefault());
-        String date_ = sfd.format(date);
-        userDetails.setNumbers(attempts);
-        userDetails.setKey(key);
-        userDetails.setTimeStamp(date_);
-        databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-
-                userArrayList.add(new SteakModel(Stash.getInt("streak")));
-                Stash.put("StreakList", userArrayList);
-                timer.cancel();
-                Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
-                intent.putExtra("score", score);
-                startActivity(intent);
-                finish();
+        if (Stash.getString("first_time").equals("no")) {
+            userInput.setVisibility(View.GONE);
+            expectedTextList.size();
+            if (score > 0) {
+                int totalScore = expectedTextList.size();
+                double percentage = (double) score / totalScore * 100;
+                Config.showProgressDialog(TestStartedActivity.this);
+                userDetails.setProgress(percentage + "");
+            } else {
+                userDetails.setProgress("0");
             }
-        });
+            DatabaseReference child = databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress");
+            String key = child.push().getKey();
+            Date date = Calendar.getInstance().getTime();
+            SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss",
+                    Locale.getDefault());
+            String date_ = sfd.format(date);
+            userDetails.setNumbers(attempts);
+            userDetails.setKey(key);
+            userDetails.setTimeStamp(date_);
+            databaseReference.child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Progress").child(key).setValue(userDetails).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    userArrayList.add(new SteakModel(Stash.getInt("streak")));
+                    Stash.put("StreakList", userArrayList);
+                    timer.cancel();
+                    Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
+                    intent.putExtra("score", score);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        } else {
+            Stash.put("first_time", "no");
+            CompleteDialogClass completeDialogClass = new CompleteDialogClass(TestStartedActivity.this);
+            completeDialogClass.setCancelable(false);
+            completeDialogClass.show();
+        }
     }
 }
