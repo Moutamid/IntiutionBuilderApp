@@ -10,21 +10,21 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.StrictMode;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.fxn.stash.Stash;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.masoudss.lib.WaveformSeekBar;
 import com.moutamid.instuitionbuilder.R;
-import com.moutamid.instuitionbuilder.config.CompleteDialogClass;
 import com.moutamid.instuitionbuilder.config.Config;
 import com.moutamid.instuitionbuilder.config.RankManager;
 import com.moutamid.instuitionbuilder.config.SubscribeDialogClass;
@@ -60,6 +60,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     ImageView notification;
     int current_position = 0;
     ImageView badge;
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,10 @@ public class WalkThroughActivity extends AppCompatActivity {
         animal_name.setText("Church");
         animal_image.setImageResource(R.drawable.church);
         rankManager.checkRankAttainment();
+        showBottomSheetDialog();
         mediaPlayer = MediaPlayer.create(this, R.raw.church);
+        showsecondBottomSheetDialog();
+
         timer = new
 
                 CountDownTimer(60000, 1000) {
@@ -133,8 +137,8 @@ public class WalkThroughActivity extends AppCompatActivity {
         notification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            startActivity(new Intent(WalkThroughActivity.this, NotificationsActivity.class
-            ));
+                startActivity(new Intent(WalkThroughActivity.this, NotificationsActivity.class
+                ));
             }
         });
 
@@ -168,7 +172,6 @@ public class WalkThroughActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (Stash.getString("first_time").equals("yes")) {
-
                     gallery.setVisibility(View.GONE);
                     animal_name.setText(Config.dataArrayList().get(current_position).text);
                     mediaPlayer = MediaPlayer.create(WalkThroughActivity.this, Config.dataArrayList().get(current_position).audio);
@@ -285,33 +288,69 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
     }
 
-    @Override
-    public void onBackPressed() {
-        gallery.setVisibility(View.GONE);
-        audio.setVisibility(View.GONE);
-        play_icon.setVisibility(View.VISIBLE);
-        pause_icon.setVisibility(View.GONE);
-        waveformSeekBar.setProgress(0);
+//    @Override
+//    public void onBackPressed() {
+//        gallery.setVisibility(View.GONE);
+//        audio.setVisibility(View.GONE);
+//        play_icon.setVisibility(View.VISIBLE);
+//        pause_icon.setVisibility(View.GONE);
+//        waveformSeekBar.setProgress(0);
 
-    }
+//    }
 
     @Override
     protected void onResume() {
         super.onResume();
         rankManager.updateLastUsageDate();
-        timer.start();
+//        timer.start();
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        timer.cancel();
+//        timer.cancel();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        timer.cancel();
+//        timer.cancel();
     }
+
+    private void showBottomSheetDialog() {
+
+        if (!Stash.getBoolean("banner_show")) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.main_banner);
+            Button btnGetStart = bottomSheetDialog.findViewById(R.id.btnGetStart);
+            bottomSheetDialog.show();
+            bottomSheetDialog.setCancelable(false);
+            btnGetStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+                    Stash.put("banner_show", true);
+                }
+            });
+        }
+    }
+
+    private void showsecondBottomSheetDialog() {
+        if (Stash.getString("first_time").equals("no") && !Stash.getBoolean("second")) {
+            Stash.put("second", true);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.second_attempt_banner);
+            Button btnGetStart = bottomSheetDialog.findViewById(R.id.btnGetStart);
+            bottomSheetDialog.show();
+            bottomSheetDialog.setCancelable(false);
+            btnGetStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+                }
+            });
+        }
+    }
+
 }

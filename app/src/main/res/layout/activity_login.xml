@@ -72,6 +72,8 @@
             android:layout_marginTop="3dp"
             android:inputType="textPassword"
             android:layout_marginBottom="2dp"
+            android:drawableEnd="@drawable/show_password"
+            android:paddingEnd="15dp"
 
             android:fontFamily="@font/inter_medium"
             android:hint="Password" />

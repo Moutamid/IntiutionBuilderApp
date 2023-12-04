@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 
 
 //import com.moutamid.instuitionbuilder.Admin.Activities.AddNewItem;
+import com.moutamid.instuitionbuilder.Admin.Activities.AddNewItem;
 import com.moutamid.instuitionbuilder.Admin.Activities.NotifcationsActivity;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.R;
@@ -33,7 +34,7 @@ public class AdminPanel extends AppCompatActivity {
           add_vide_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                startActivity(new Intent(AdminPanel.this, AddNewItem.class));
+                startActivity(new Intent(AdminPanel.this, AddNewItem.class));
             }
         });
         notification_btn.setOnClickListener(new View.OnClickListener() {

@@ -1,11 +1,10 @@
 package com.moutamid.instuitionbuilder.Home;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +47,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Admin.AdminPanel;
 import com.moutamid.instuitionbuilder.Authentication.EnterPasswordActivity;
-import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
@@ -62,7 +60,7 @@ import java.util.Objects;
 public class IntroActivity extends AppCompatActivity {
 
     private BottomSheetBehavior<ConstraintLayout> bottomSheetBehavior;
-    VideoView videoView;
+
     Button buttonNext;
     TextView register, login;
     EditText email, idEdtpassword, idEdtemail;
@@ -75,24 +73,14 @@ public class IntroActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
 
+    String emailRegex = "^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dummy);
+
         buttonNext = findViewById(R.id.buttonNext);
-        videoView = findViewById(R.id.videoView);
-        Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.trainging_video); // Replace with your video resource ID
-        videoView.setVideoURI(videoUri);
-        videoView.start();
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                Stash.put("video_seen", "yes");
-                startActivity(new Intent(IntroActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
         showBottomSheetDialog();
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +145,12 @@ public class IntroActivity extends AppCompatActivity {
                 } else if (TextUtils.isEmpty(password_str)) {
                     idEdtpassword.setError("Please enter Password");
                 } else {
-                    login(email_str, password_str);
+                    if (isValidEmail(idEdtemail.getText().toString())) {
+                        login(email_str, password_str);
+                    } else {
+                        idEdtemail.setError("Please write email in correct format");
+
+                    }
                 }
             }
         });
@@ -192,9 +185,16 @@ public class IntroActivity extends AppCompatActivity {
         if (email.getText().toString().isEmpty()) {
             email.setError("Please Enter");
         } else {
-            Intent intent = new Intent(IntroActivity.this, EnterPasswordActivity.class);
-            intent.putExtra("email", email.getText().toString());
-            startActivity(intent);
+            if (isValidEmail(email.getText().toString())) {
+                Intent intent = new Intent(IntroActivity.this, EnterPasswordActivity.class);
+                intent.putExtra("email", email.getText().toString());
+                startActivity(intent);
+            } else {
+                email.setError("Please write email in correct format");
+
+            }
+
+
         }
     }
     private void login(String email, String password) {
@@ -348,5 +348,14 @@ public class IntroActivity extends AppCompatActivity {
     public void google(View view) {
         Intent intent = googleSignInClient.getSignInIntent();
         startActivityForResult(intent, 100);
+    }
+
+    private boolean isValidEmail(String email) {
+        // Use Patterns.EMAIL_ADDRESS to check if the email is in a valid format
+        if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Check if the email ends with "@gmail.com"
+            return email.toLowerCase().endsWith("@gmail.com");
+        }
+        return false;
     }
 }

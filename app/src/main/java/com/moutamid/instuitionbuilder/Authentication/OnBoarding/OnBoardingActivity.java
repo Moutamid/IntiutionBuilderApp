@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,8 @@ public class OnBoardingActivity extends AppCompatActivity {
                 imageView.setVisibility(View.VISIBLE);
                 txtTitle.setVisibility(View.VISIBLE);
 
+
+
 //                imageView.clearAnimation();
 //                txtTitle.clearAnimation();
 //                imageView.setAnimation(null);
@@ -86,15 +89,17 @@ public class OnBoardingActivity extends AppCompatActivity {
                             SharedPreferences preferences = getSharedPreferences("Record", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("boarding_view", "yes");
+                            Stash.put("banner_show", false);
+
                             editor.apply();
-                            if (Stash.getString("video_seen").equals("yes")) {
-                                startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
-                                finish();
-                            }
-                            else {
+//                            if (Stash.getString("video_seen").equals("yes")) {
+//                                startActivity(new Intent(OnBoardingActivity.this, LoginActivity.class));
+//                                finish();
+//                            }
+//                            else {
                                 startActivity(new Intent(OnBoardingActivity.this, IntroActivity.class));
                                 finish();
-                            }
+//                            }
                         }
                         else
                         {
@@ -170,12 +175,16 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     void prepareBoardingData() {
-        OnBoardingModel bm = new OnBoardingModel("Lorem ipsum dolor eiusmod sit amet consectetur adipiscing elit", "Earn great badges by maintaining your steak", R.drawable.mockup_1, R.drawable.page_1);
+        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_1 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding1", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_2= (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding2", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_3 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding3", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+
+        OnBoardingModel bm = new OnBoardingModel(onBoardingModel_1.description, onBoardingModel_1.title, R.drawable.mockup_1, R.drawable.page_1);
         listBoarding.add(bm);
 
-        bm = new OnBoardingModel("Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", "Easily login to your account", R.drawable.mockup_2, R.drawable.page_2);
+        bm = new OnBoardingModel(onBoardingModel_2.description, onBoardingModel_2.title, R.drawable.mockup_2, R.drawable.page_2);
         listBoarding.add(bm);
-        bm = new OnBoardingModel("Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua", "Walk Through your vocabulary ", R.drawable.mockup_3, R.drawable.page_3);
+        bm = new OnBoardingModel(onBoardingModel_3.description, onBoardingModel_3.title, R.drawable.mockup_3, R.drawable.page_3);
         listBoarding.add(bm);
 
 

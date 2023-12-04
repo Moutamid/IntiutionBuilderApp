@@ -2,8 +2,8 @@ package com.moutamid.instuitionbuilder.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fxn.stash.Stash;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,7 +22,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.moutamid.instuitionbuilder.Adapter.ProgressAdapter;
-import com.moutamid.instuitionbuilder.Model.ProgressModel;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
@@ -59,6 +60,7 @@ RecyclerView content_rcv;
         content_rcv.setLayoutManager(gridLayoutManager);
         progressAdapter = new ProgressAdapter(StatisticsActivity.this, progressModelList);
         content_rcv.setAdapter(progressAdapter);
+        showBottomSheetDialog();
         if (Config.isNetworkAvailable(StatisticsActivity.this)) {
 
             getProducts();
@@ -89,6 +91,22 @@ RecyclerView content_rcv;
 
             }
         });
+    }
+
+    private void showBottomSheetDialog() {
+        if (!Stash.getBoolean("video_show")) {
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(R.layout.after_see_video);
+            Button btnGetStart = bottomSheetDialog.findViewById(R.id.btnGetStart);
+            bottomSheetDialog.show();
+            btnGetStart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    bottomSheetDialog.dismiss();
+                    startActivity(new Intent(StatisticsActivity.this, VideoViewActivity.class));
+                }
+            });
+        }
     }
 
 }

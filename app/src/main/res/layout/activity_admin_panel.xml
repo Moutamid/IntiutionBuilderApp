@@ -55,7 +55,6 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
         app:cardCornerRadius="12dp"
         app:cardElevation="10dp">
 
@@ -66,7 +65,7 @@
             android:gravity="center"
             android:fontFamily="@font/inter_medium"
             android:textAllCaps="false"
-            android:text="Add New Item"
+            android:text="Add Boarding Text"
             android:textColor="@color/black"
             android:textSize="18dp" />
 

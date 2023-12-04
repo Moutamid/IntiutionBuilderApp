@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".Home.VideoViewActivity"
+            android:exported="false" />
+        <activity
             android:name=".Home.BadgeActivity"
             android:exported="false" />
         <activity
@@ -50,7 +53,7 @@
             android:exported="false" />
         <activity
             android:name=".Home.ScoreRankingActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".Home.StatChart2Activity"
             android:exported="false" />
@@ -98,8 +101,7 @@
 
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-        </activity>
-        <!-- <meta-data -->
+        </activity> <!-- <meta-data -->
         <!-- android:name="com.facebook.sdk.ApplicationId" -->
         <!-- android:value="@string/facebook_app_id" /> -->
         <activity
@@ -115,7 +117,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

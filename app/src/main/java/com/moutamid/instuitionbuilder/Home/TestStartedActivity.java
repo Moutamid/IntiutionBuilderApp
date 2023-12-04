@@ -5,9 +5,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +61,7 @@ public class TestStartedActivity extends AppCompatActivity {
     View view1;
     int streak = 0;
     ArrayList<SteakModel> userArrayList = Stash.getArrayList("StreakList", SteakModel.class);
-
+    ImageView finalize_answer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +69,7 @@ public class TestStartedActivity extends AppCompatActivity {
 
 
         next = findViewById(R.id.next);
+        finalize_answer = findViewById(R.id.finalize_answer);
         dp = findViewById(R.id.dp);
         user_name = findViewById(R.id.user_name);
         questionText = findViewById(R.id.questionText);
@@ -109,6 +113,12 @@ public class TestStartedActivity extends AppCompatActivity {
                 checkUserInput();
             }
         });
+        finalize_answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkUserInput();
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,7 +126,17 @@ public class TestStartedActivity extends AppCompatActivity {
                 handleGameEnd();
             }
         });
-
+        userInput.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                    // Move focus to the next EditText
+                    userInput.requestFocus();
+                    return true;
+                }
+                return false;
+            }
+        });
         // Set up the timer for 1 minute
         timer = new CountDownTimer(60000, 1000) {
             @Override
@@ -188,7 +208,6 @@ public class TestStartedActivity extends AppCompatActivity {
                     updateScore();
                     userInput.getText().clear();
 
-                    // Show the next expected text or handle accordingly
                     showNextText();
                 } else {
                     showToast("Limit exceeded");
@@ -219,6 +238,8 @@ public class TestStartedActivity extends AppCompatActivity {
     }
 
     private void handleGameEnd() {
+        finalize_answer.setVisibility(View.GONE);
+
         if (Stash.getString("first_time").equals("no")) {
             userInput.setVisibility(View.GONE);
             expectedTextList.size();

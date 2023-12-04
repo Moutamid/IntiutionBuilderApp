@@ -3,10 +3,13 @@ package com.moutamid.instuitionbuilder.Authentication;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -70,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
     SignInButton btSignIn;
     GoogleSignInClient googleSignInClient;
     FirebaseAuth firebaseAuth;
+    private boolean isPasswordVisible = false;
 
 
     @Override
@@ -91,6 +96,24 @@ public class LoginActivity extends AppCompatActivity {
         emailEdt = findViewById(R.id.idEdtemail);
         passwordEdt = findViewById(R.id.idEdtpassword);
         idBtnSubmitCourse = findViewById(R.id.idBtnSubmitCourse);
+updatePasswordVisibilityDrawable();
+        passwordEdt.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (passwordEdt.getRight() - passwordEdt.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // Clicked on the drawable at the end
+                        togglePasswordVisibility();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
+
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -126,6 +149,37 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        updatePasswordVisibilityDrawable();
+
+        if (isPasswordVisible) {
+            // Show password
+
+            passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        } else {
+            // Hide password
+            passwordEdt.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        }
+
+        // Move the cursor to the end of the text to avoid issues with the transformation
+        passwordEdt.setSelection(passwordEdt.getText().length());
+    }
+
+    // Method to check if the password is currently visible
+
+    // Method to update the right drawable based on password visibility
+    private void updatePasswordVisibilityDrawable() {
+        int drawableResId = isPasswordVisible ?
+                R.drawable.show_password :
+                R.drawable.hide;
+
+        Drawable drawable = ContextCompat.getDrawable(this, drawableResId);
+
+        // Set the right drawable
+        passwordEdt.setCompoundDrawablesWithIntrinsicBounds(
+                null, null, drawable, null);
+    }
     private void login(String email, String password) {
         if (email.equals("admin@gmail.com")) {
             startActivity(new Intent(LoginActivity.this, AdminPanel.class));
