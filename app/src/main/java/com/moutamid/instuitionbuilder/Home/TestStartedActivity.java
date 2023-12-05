@@ -99,6 +99,7 @@ public class TestStartedActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         timerText = findViewById(R.id.timerText);
         enteredTextListView = findViewById(R.id.enteredTextListView);
+        userInput.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         // Set the initial score
         updateScore();
@@ -269,7 +270,7 @@ public class TestStartedActivity extends AppCompatActivity {
                     Intent intent = new Intent(TestStartedActivity.this, StatisticsActivity.class);
                     intent.putExtra("score", score);
                     startActivity(intent);
-                    finish();
+                    finishAffinity();
                 }
             });
         } else {

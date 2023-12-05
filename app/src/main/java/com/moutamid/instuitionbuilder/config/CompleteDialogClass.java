@@ -12,8 +12,7 @@ import android.widget.TextView;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.R;
 
-public class CompleteDialogClass extends Dialog implements
-        View.OnClickListener {
+public class CompleteDialogClass extends Dialog  {
     public Activity c;
     public Dialog d;
 
@@ -30,24 +29,17 @@ public class CompleteDialogClass extends Dialog implements
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.complete);
         TextView move_next = findViewById(R.id.move_next);
-        move_next.setOnClickListener(this);
+        move_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.move_next:
                 c.startActivity(new Intent(c, WalkThroughActivity.class));
                 c.finish();
-                dismiss();
-                break;
+            dismiss();}
+        });
 
 
-            default:
-                break;
-        }
-        dismiss();
     }
+
+
 }

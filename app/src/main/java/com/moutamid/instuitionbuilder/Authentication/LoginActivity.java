@@ -117,7 +117,6 @@ updatePasswordVisibilityDrawable();
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
         googleSignInClient = GoogleSignIn.getClient(LoginActivity.this
                 , googleSignInOptions);
         btSignIn.setOnClickListener(view -> {
@@ -166,9 +165,6 @@ updatePasswordVisibilityDrawable();
         passwordEdt.setSelection(passwordEdt.getText().length());
     }
 
-    // Method to check if the password is currently visible
-
-    // Method to update the right drawable based on password visibility
     private void updatePasswordVisibilityDrawable() {
         int drawableResId = isPasswordVisible ?
                 R.drawable.show_password :

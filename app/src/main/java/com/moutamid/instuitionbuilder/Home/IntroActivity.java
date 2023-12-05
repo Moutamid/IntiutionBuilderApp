@@ -1,10 +1,13 @@
 package com.moutamid.instuitionbuilder.Home;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -72,6 +76,8 @@ public class IntroActivity extends AppCompatActivity {
     GoogleSignInClient googleSignInClient;
     FirebaseAuth firebaseAuth;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
+    private boolean isPasswordVisible = false;
+
 
     String emailRegex = "^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
@@ -102,9 +108,7 @@ public class IntroActivity extends AppCompatActivity {
         idEdtpassword = bottomSheetDialog.findViewById(R.id.idEdtpassword);
         Button buttonOnBoardingAction = bottomSheetDialog.findViewById(R.id.buttonOnBoardingAction);
         Button idBtnSubmitCourse = bottomSheetDialog.findViewById(R.id.idBtnSubmitCourse);
-        ///
         btSignIn = bottomSheetDialog.findViewById(R.id.bt_sign_in);
-
         ImageView mButtonFacebook = bottomSheetDialog.findViewById(R.id.buttonFacebook);
         FacebookSdk.sdkInitialize(IntroActivity.this);
         callbackManager = CallbackManager.Factory.create();
@@ -113,7 +117,7 @@ public class IntroActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(
-                GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken("890062472575-05ue90j9694eg6eorj1lhjoknkj3oqja.apps.googleusercontent.com")
+                GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
 
@@ -175,8 +179,23 @@ public class IntroActivity extends AppCompatActivity {
             }
         });
 
-//        LinearLayout download = bottomSheetDialog.findViewById(R.id.download);
-//        LinearLayout delete = bottomSheetDialog.findViewById(R.id.delete);
+        updatePasswordVisibilityDrawable();
+        idEdtpassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_RIGHT = 2;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (idEdtpassword.getRight() - idEdtpassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // Clicked on the drawable at the end
+                        togglePasswordVisibility();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+
 
         bottomSheetDialog.show();
     }
@@ -331,6 +350,7 @@ public class IntroActivity extends AppCompatActivity {
 
                     }
                 } catch (ApiException e) {
+
                     displayToast(e.getMessage() + "");
                     e.printStackTrace();
                 }
@@ -343,6 +363,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private void displayToast(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+        Log.d("dataaa", s+"");
     }
 
     public void google(View view) {
@@ -358,4 +379,34 @@ public class IntroActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    private void togglePasswordVisibility() {
+        isPasswordVisible = !isPasswordVisible;
+        updatePasswordVisibilityDrawable();
+
+        if (isPasswordVisible) {
+            // Show password
+
+            idEdtpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+        } else {
+            // Hide password
+            idEdtpassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        }
+
+        // Move the cursor to the end of the text to avoid issues with the transformation
+        idEdtpassword.setSelection(idEdtpassword.getText().length());
+    }
+
+    private void updatePasswordVisibilityDrawable() {
+        int drawableResId = isPasswordVisible ?
+                R.drawable.show_password :
+                R.drawable.hide;
+
+        Drawable drawable = ContextCompat.getDrawable(this, drawableResId);
+
+        // Set the right drawable
+        idEdtpassword.setCompoundDrawablesWithIntrinsicBounds(
+                null, null, drawable, null);
+    }
+
 }

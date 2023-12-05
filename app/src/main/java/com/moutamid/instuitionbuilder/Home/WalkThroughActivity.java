@@ -8,12 +8,15 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +63,13 @@ public class WalkThroughActivity extends AppCompatActivity {
     ImageView notification;
     int current_position = 0;
     ImageView badge;
+    private Handler autoScrollHandler = new Handler();
+    private int autoScrollDuration = 5000; // Auto-scroll duration in milliseconds
+    private boolean userScrolled = false;
+    String[] displayedValues;
+    NumberPicker numberPicker;
+    private int lastManualScrollPosition = -1;
+
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -83,6 +93,7 @@ public class WalkThroughActivity extends AppCompatActivity {
         play_icon = findViewById(R.id.play);
         pause_icon = findViewById(R.id.pause);
         questionText = findViewById(R.id.questionText);
+        numberPicker = findViewById(R.id.number_picker);
 
         dp.setImageResource(Stash.getInt("image_path"));
         user_name.setText(Stash.getString("name"));
@@ -97,7 +108,6 @@ public class WalkThroughActivity extends AppCompatActivity {
         showBottomSheetDialog();
         mediaPlayer = MediaPlayer.create(this, R.raw.church);
         showsecondBottomSheetDialog();
-
         timer = new
 
                 CountDownTimer(60000, 1000) {
@@ -200,7 +210,6 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         play_icon.setVisibility(View.VISIBLE);
     }
 });
-        NumberPicker numberPicker = findViewById(R.id.number_picker);
 
 
         numberPicker.setDividerThickness(0);
@@ -218,8 +227,8 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
         // Set typeface
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
-        String[] displayedValues;
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
+
         if (Stash.getString("first_time").equals("no")) {
 
             questionText.setText("1/" + Config.secondRoundDataArrayList().size());
@@ -250,43 +259,27 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         numberPicker.setAccessibilityDescriptionEnabled(true);
         numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
 
+        autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollDuration);
 
-        numberPicker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                numberPicker.setSelectedTextColor(ContextCompat.getColor(WalkThroughActivity.this, R.color.white));
-                view1.setVisibility(View.VISIBLE);
-                final int sdk = android.os.Build.VERSION.SDK_INT;
-                if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    buttonOnBoardingAction.setTextColor(Color.WHITE);
-                    buttonOnBoardingAction.setBackgroundDrawable(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-                } else {
-                    buttonOnBoardingAction.setTextColor(Color.WHITE);
-                    buttonOnBoardingAction.setBackground(ContextCompat.getDrawable(WalkThroughActivity.this, R.drawable.btn_bg_black));
-                }
-            }
-        });
 
 
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
                 current_position = newVal - 1;
+                lastManualScrollPosition = newVal - 1;
+
                 if (Stash.getString("first_time").equals("no")) {
                     questionText.setText(newVal + "/" + Config.secondRoundDataArrayList().size());
-                } else {
+                }
+                else
+                {
                     questionText.setText(newVal + "/" + Config.dataArrayList().size());
                 }
             }
         });
-
     }
 
-    public void test_start(View view) {
-        timer.cancel();
-        startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
-    }
 
 //    @Override
 //    public void onBackPressed() {
@@ -353,4 +346,42 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         }
     }
 
+    private Runnable autoScrollRunnable = new Runnable() {
+        @Override
+        public void run() {
+            // Auto-scroll logic
+            int nextPosition;
+
+            if (lastManualScrollPosition != -1) {
+                // If the user manually scrolled, continue from that position
+                nextPosition = lastManualScrollPosition + 1;
+                lastManualScrollPosition = -1; // Reset the manual scroll position
+            } else {
+                // Otherwise, continue with the regular auto-scroll logic
+                nextPosition = current_position + 1;
+            }
+
+            if (nextPosition < displayedValues.length) {
+                current_position = nextPosition;
+                numberPicker.setValue(nextPosition + 1);
+
+                // Additional logic for updating UI or checking conditions
+
+                // Schedule the next auto-scroll after 5 seconds
+                autoScrollHandler.postDelayed(this, autoScrollDuration);
+            }
+        }
+    };
+
+    private void scheduleAutoScroll() {
+        autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollDuration);
+    }
+
+    private void resetAutoScrollTimer() {
+        // Remove existing callbacks to prevent multiple auto-scrolls scheduled
+        autoScrollHandler.removeCallbacks(autoScrollRunnable);
+
+        // Schedule the auto-scroll again
+        scheduleAutoScroll();
+    }
 }

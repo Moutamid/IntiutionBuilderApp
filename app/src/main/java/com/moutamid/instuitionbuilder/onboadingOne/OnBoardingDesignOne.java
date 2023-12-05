@@ -61,11 +61,10 @@ public class OnBoardingDesignOne extends AppCompatActivity {
 //         }
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
-                OnBoardingDesignOne.this, R.style.Theme_Design);
+                OnBoardingDesignOne.this, R.style.AppTheme);
         View bottomSheetView = LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.modal_bottom_sheet,
                         (ConstraintLayout) findViewById(R.id.modalBottomSheetCntainer));
-
         layoutOnboardingIndicator = bottomSheetView.findViewById(R.id.layoutOnboardingIndicators);
         buttonOnboardingAction = bottomSheetView.findViewById(R.id.button1);
         bottomSheetView.findViewById(R.id.button1).setOnClickListener(new View.OnClickListener() {

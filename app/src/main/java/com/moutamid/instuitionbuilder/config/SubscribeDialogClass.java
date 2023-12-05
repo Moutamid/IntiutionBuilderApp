@@ -26,8 +26,7 @@ import com.android.billingclient.api.SkuDetailsParams;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscribeDialogClass extends Dialog implements
-        View.OnClickListener {
+public class SubscribeDialogClass extends Dialog  {
     public Activity c;
     public Dialog d;
     private BillingClient billingClient;
@@ -45,7 +44,14 @@ public class SubscribeDialogClass extends Dialog implements
         getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         setContentView(R.layout.subscribe);
         TextView move_next = findViewById(R.id.move_next);
-        move_next.setOnClickListener(this);
+        move_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchBillingFlow();
+                dismiss();
+
+            }
+        });
         billingClient = BillingClient.newBuilder(c)
                 .setListener(purchasesUpdatedListener)
                 .enablePendingPurchases()
@@ -56,20 +62,7 @@ public class SubscribeDialogClass extends Dialog implements
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.move_next:
-               launchBillingFlow();
-                dismiss();
-                break;
 
-
-            default:
-                break;
-        }
-        dismiss();
-    }
     private void connectBillingClient() {
         billingClient.startConnection(new BillingClientStateListener() {
             @Override

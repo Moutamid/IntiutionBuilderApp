@@ -305,8 +305,7 @@
             android:fontFamily="@font/inter_semi_bold"
             android:gravity="center"
             android:backgroundTint="@color/black"
-            android:onClick="test_start"
-
+            android:visibility="gone"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Continue to Test"

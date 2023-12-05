@@ -1,12 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
-
 }
+
 
 android {
     compileSdkVersion 33
     buildToolsVersion "30.0.2"
+    namespace 'com.moutamid.instuitionbuilder'
 
     defaultConfig {
         applicationId "com.moutamid.instuitionbuilder"
