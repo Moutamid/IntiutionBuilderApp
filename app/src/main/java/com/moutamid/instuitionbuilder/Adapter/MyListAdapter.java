@@ -40,8 +40,6 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder
             }
         });
     }
-
-
     @Override
     public int getItemCount() {
         return listdata.length;

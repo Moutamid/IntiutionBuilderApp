@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +50,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Admin.AdminPanel;
 import com.moutamid.instuitionbuilder.Authentication.EnterPasswordActivity;
+import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
@@ -73,6 +73,7 @@ public class IntroActivity extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     SignInButton btSignIn;
+    ImageView google;
     GoogleSignInClient googleSignInClient;
     FirebaseAuth firebaseAuth;
     FirebaseAuth mAuth= FirebaseAuth.getInstance();
@@ -108,6 +109,7 @@ public class IntroActivity extends AppCompatActivity {
         idEdtpassword = bottomSheetDialog.findViewById(R.id.idEdtpassword);
         Button buttonOnBoardingAction = bottomSheetDialog.findViewById(R.id.buttonOnBoardingAction);
         Button idBtnSubmitCourse = bottomSheetDialog.findViewById(R.id.idBtnSubmitCourse);
+        google = bottomSheetDialog.findViewById(R.id.google);
         btSignIn = bottomSheetDialog.findViewById(R.id.bt_sign_in);
         ImageView mButtonFacebook = bottomSheetDialog.findViewById(R.id.buttonFacebook);
         FacebookSdk.sdkInitialize(IntroActivity.this);
@@ -116,14 +118,18 @@ public class IntroActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(
-                GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder
+                (GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("10469575736-uglg2p8a7sns11qkbfdc7j7gsrhg4rl5.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
-
         googleSignInClient = GoogleSignIn.getClient(IntroActivity.this
                 , googleSignInOptions);
         btSignIn.setOnClickListener(view -> {
+            Intent intent = googleSignInClient.getSignInIntent();
+            startActivityForResult(intent, 100);
+        });
+        google.setOnClickListener(view -> {
             Intent intent = googleSignInClient.getSignInIntent();
             startActivityForResult(intent, 100);
         });
@@ -337,8 +343,14 @@ public class IntroActivity extends AppCompatActivity {
 // Check condition
                                     if (task.isSuccessful()) {
                                         String displayName = signInAccountTask.getResult().getDisplayName();
-                                        displayToast(displayName + " ");
-                                        startActivity(new Intent(IntroActivity.this, UserDetailsActivity.class));
+                                        if (Stash.getString("name").isEmpty()) {
+                                            Stash.put("name", displayName);
+                                            startActivity(new Intent(IntroActivity.this, UserDetailsActivity.class));
+                                            finishAffinity();
+                                        } else {
+                                            startActivity(new Intent(IntroActivity.this, WalkThroughActivity.class));
+                                            finishAffinity();
+                                        }
 
                                     } else {
 // When task is unsuccessful

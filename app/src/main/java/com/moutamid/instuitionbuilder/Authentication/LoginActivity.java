@@ -114,7 +114,9 @@ updatePasswordVisibilityDrawable();
         });
 
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder
+                (GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("10469575736-uglg2p8a7sns11qkbfdc7j7gsrhg4rl5.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(LoginActivity.this
@@ -281,7 +283,7 @@ updatePasswordVisibilityDrawable();
     }
 
     public static void checkApp(Activity activity) {
-        String appName = "InstuitionBuilder";
+        String appName = "IntiutionBuilder";
 
         new Thread(() -> {
             URL google = null;
@@ -374,9 +376,14 @@ updatePasswordVisibilityDrawable();
 // Check condition
                                     if (task.isSuccessful()) {
                                         String displayName = signInAccountTask.getResult().getDisplayName();
-                                        displayToast(displayName + " ");
-                                        startActivity(new Intent(LoginActivity.this, UserDetailsActivity.class));
-
+                                        if (Stash.getString("name").isEmpty()) {
+                                            Stash.put("name", displayName);
+                                            startActivity(new Intent(LoginActivity.this, UserDetailsActivity.class));
+                                            finishAffinity();
+                                        } else {
+                                            startActivity(new Intent(LoginActivity.this, WalkThroughActivity.class));
+                                            finishAffinity();
+                                        }
                                     } else {
 // When task is unsuccessful
 // Display Toast

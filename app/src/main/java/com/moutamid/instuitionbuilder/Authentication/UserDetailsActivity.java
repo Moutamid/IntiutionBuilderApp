@@ -43,18 +43,20 @@ public class UserDetailsActivity extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("IntuitionBuilder");
         userDetails = new UserDetails();
-
-        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton radioButton = findViewById(i);
-                if (radioButton.getText().equals("Male")) {
-                    gender = "Male";
-                } else if (radioButton.getText().equals("Female")) {
-                    gender = "Female";
-                } else {
-                    gender = "Not Preferred";
-                }
+        if (!Stash.getString("name").isEmpty()) {
+            name.setText(Stash.getString("name"));
+        }
+            radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                    RadioButton radioButton = findViewById(i);
+                    if (radioButton.getText().equals("Male")) {
+                        gender = "Male";
+                    } else if (radioButton.getText().equals("Female")) {
+                        gender = "Female";
+                    } else {
+                        gender = "Not Preferred";
+                    }
             }
         });
         btnregister.setOnClickListener(new View.OnClickListener() {

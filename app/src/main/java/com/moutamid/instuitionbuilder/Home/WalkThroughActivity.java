@@ -1,8 +1,9 @@
 package com.moutamid.instuitionbuilder.Home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -16,7 +17,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -69,7 +69,7 @@ public class WalkThroughActivity extends AppCompatActivity {
     String[] displayedValues;
     NumberPicker numberPicker;
     private int lastManualScrollPosition = -1;
-
+    ArrayList<Integer> integerList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -229,6 +229,7 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
         numberPicker.setTypeface(Typeface.create(getString(R.string.roboto_light), Typeface.NORMAL));
         numberPicker.setTypeface(getString(R.string.roboto_light), Typeface.NORMAL);
 
+
         if (Stash.getString("first_time").equals("no")) {
 
             questionText.setText("1/" + Config.secondRoundDataArrayList().size());
@@ -261,7 +262,19 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
         autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollDuration);
 
-
+        numberPicker.setOnScrollListener(new NumberPicker.OnScrollListener() {
+            @Override
+            public void onScrollStateChange(NumberPicker view, int scrollState) {
+                if (!integerList.contains(numberPicker.getValue())) {
+                    integerList.add(numberPicker.getValue());
+                }
+                Log.d("list_size", integerList.size()+ " ");
+                if(integerList.size()>=14)
+                {
+                    buttonOnBoardingAction.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -271,11 +284,12 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
                 if (Stash.getString("first_time").equals("no")) {
                     questionText.setText(newVal + "/" + Config.secondRoundDataArrayList().size());
-                }
-                else
-                {
+                } else {
                     questionText.setText(newVal + "/" + Config.dataArrayList().size());
                 }
+                resetAutoScrollTimer();
+
+
             }
         });
     }
@@ -360,16 +374,31 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 // Otherwise, continue with the regular auto-scroll logic
                 nextPosition = current_position + 1;
             }
-
             if (nextPosition < displayedValues.length) {
                 current_position = nextPosition;
                 numberPicker.setValue(nextPosition + 1);
-
-                // Additional logic for updating UI or checking conditions
-
-                // Schedule the next auto-scroll after 5 seconds
                 autoScrollHandler.postDelayed(this, autoScrollDuration);
             }
+            if (!integerList.contains(numberPicker.getValue())) {
+                integerList.add(numberPicker.getValue());
+            }
+            if (Stash.getString("first_time").equals("no")) {
+                if(integerList.size()>=15)
+                {
+                    buttonOnBoardingAction.setVisibility(View.VISIBLE);
+                }
+                questionText.setText(nextPosition + "/" + Config.secondRoundDataArrayList().size());
+            } else {
+                if(integerList.size()>=10)
+                {
+                    buttonOnBoardingAction.setVisibility(View.VISIBLE);
+                }
+                questionText.setText(nextPosition + "/" + Config.dataArrayList().size());
+            }
+
+            Log.d("list_size", integerList.size()+ " ");
+
+
         }
     };
 
@@ -380,8 +409,24 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
     private void resetAutoScrollTimer() {
         // Remove existing callbacks to prevent multiple auto-scrolls scheduled
         autoScrollHandler.removeCallbacks(autoScrollRunnable);
+        autoScrollHandler.postDelayed(autoScrollRunnable, autoScrollDuration);
 
-        // Schedule the auto-scroll again
-        scheduleAutoScroll();
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setMessage("Do you want to exit application?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                })
+                .show();
     }
 }

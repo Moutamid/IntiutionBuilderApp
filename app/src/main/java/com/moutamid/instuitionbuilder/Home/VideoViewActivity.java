@@ -29,7 +29,7 @@ public class VideoViewActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(VideoViewActivity.this);
-                bottomSheetDialog.setContentView(R.layout.video_show);
+                bottomSheetDialog.setContentView(R.layout.after_see_video);
                 Button btnGetStart = bottomSheetDialog.findViewById(R.id.btnGetStart);
                 bottomSheetDialog.show();
                 bottomSheetDialog.setCancelable(false);

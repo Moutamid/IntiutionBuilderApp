@@ -280,4 +280,9 @@ public class TestStartedActivity extends AppCompatActivity {
             completeDialogClass.show();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
+    }
 }

@@ -2,7 +2,6 @@ package com.moutamid.instuitionbuilder.config;
 
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 public class RankManager {
 

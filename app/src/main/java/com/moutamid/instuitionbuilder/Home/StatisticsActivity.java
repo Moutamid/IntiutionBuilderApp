@@ -96,7 +96,7 @@ RecyclerView content_rcv;
     private void showBottomSheetDialog() {
         if (!Stash.getBoolean("video_show")) {
             BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-            bottomSheetDialog.setContentView(R.layout.after_see_video);
+            bottomSheetDialog.setContentView(R.layout.video_show);
             Button btnGetStart = bottomSheetDialog.findViewById(R.id.btnGetStart);
             bottomSheetDialog.show();
             btnGetStart.setOnClickListener(new View.OnClickListener() {

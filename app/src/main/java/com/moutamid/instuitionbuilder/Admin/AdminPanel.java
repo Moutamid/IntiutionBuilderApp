@@ -1,13 +1,9 @@
 package com.moutamid.instuitionbuilder.Admin;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
-import android.icu.lang.UCharacter;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -17,9 +13,6 @@ import com.moutamid.instuitionbuilder.Admin.Activities.AddNewItem;
 import com.moutamid.instuitionbuilder.Admin.Activities.NotifcationsActivity;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.R;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class AdminPanel extends AppCompatActivity {
     CardView add_vide_btn, notification_btn;

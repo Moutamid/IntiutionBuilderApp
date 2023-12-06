@@ -23,8 +23,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.moutamid.instuitionbuilder.Model.UserDetails;
 import com.moutamid.instuitionbuilder.R;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class EnterPasswordActivity extends AppCompatActivity {
     private EditText passwordTextView, confirmPasswordTextView;
     private Button Btn;

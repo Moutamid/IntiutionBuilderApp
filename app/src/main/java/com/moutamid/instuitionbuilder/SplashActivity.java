@@ -4,7 +4,6 @@ package com.moutamid.instuitionbuilder;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.moutamid.instuitionbuilder.Authentication.LoginActivity;
 import com.moutamid.instuitionbuilder.Authentication.OnBoarding.OnBoardingActivity;
 import com.moutamid.instuitionbuilder.Authentication.UserDetailsActivity;
-import com.moutamid.instuitionbuilder.Home.IntroActivity;
 import com.moutamid.instuitionbuilder.Home.WalkThroughActivity;
 import com.moutamid.instuitionbuilder.Model.OnBoardingModel;
 import com.moutamid.instuitionbuilder.config.Config;
