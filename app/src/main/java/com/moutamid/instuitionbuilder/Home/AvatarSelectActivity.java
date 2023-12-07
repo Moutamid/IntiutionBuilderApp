@@ -30,6 +30,7 @@ public class UserDetailsActivity extends AppCompatActivity {
 
     FirebaseDatabase firebaseDatabase;
 
+
     DatabaseReference databaseReference;
     UserDetails userDetails;
 
