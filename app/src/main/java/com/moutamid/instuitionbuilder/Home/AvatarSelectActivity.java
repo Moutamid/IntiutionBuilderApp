@@ -27,7 +27,6 @@ public class UserDetailsActivity extends AppCompatActivity {
     RadioGroup radio_group;
     String gender = "not";
     Button btnregister;
-
     FirebaseDatabase firebaseDatabase;
 
 
