@@ -45,7 +45,8 @@
                 android:background="#F6F4F4"
                 android:fontFamily="@font/inter_medium"
                 android:hint="Email"
-                android:paddingLeft="15dp" />
+                android:paddingLeft="15dp"
+                android:text="moutamidwaseem@gmail.com" />
 
             <View
                 android:layout_width="match_parent"
@@ -65,9 +66,10 @@
                 android:background="#F6F4F4"
                 android:fontFamily="@font/inter_medium"
                 android:hint="Password"
-
                 android:inputType="textPassword"
-                android:paddingLeft="15dp" />
+
+                android:paddingLeft="15dp"
+                android:text="123456789" />
 
         </LinearLayout>
 
@@ -198,8 +200,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-           />
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
 
     </LinearLayout>

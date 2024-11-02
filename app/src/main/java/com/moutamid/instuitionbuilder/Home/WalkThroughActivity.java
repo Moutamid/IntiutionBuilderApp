@@ -1,9 +1,11 @@
 package com.moutamid.instuitionbuilder.Home;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
@@ -17,13 +19,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.fxn.stash.Stash;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.masoudss.lib.WaveformSeekBar;
@@ -94,6 +100,23 @@ public class WalkThroughActivity extends AppCompatActivity {
         pause_icon = findViewById(R.id.pause);
         questionText = findViewById(R.id.questionText);
         numberPicker = findViewById(R.id.number_picker);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (
+                    (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+            ) {
+                shouldShowRequestPermissionRationale(android.Manifest.permission.POST_NOTIFICATIONS);
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+            }
+        }
+
+        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(s -> {
+            Log.d("NotificationHelper", "getToken: " + s);
+            FirebaseDatabase.getInstance().getReference("IntuitionBuilder").child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("fcmToken").setValue(s);
+        }).addOnFailureListener(e -> {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        });
 
         dp.setImageResource(Stash.getInt("image_path"));
         user_name.setText(Stash.getString("name"));
@@ -200,16 +223,17 @@ public class WalkThroughActivity extends AppCompatActivity {
                     audio.setVisibility(View.VISIBLE);
                 } else {
                     SubscribeDialogClass completeDialogClass = new SubscribeDialogClass(WalkThroughActivity.this);
-                    completeDialogClass.show();                }
+                    completeDialogClass.show();
+                }
             }
         });
-mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-    @Override
-    public void onCompletion(MediaPlayer mediaPlayer) {
-        pause_icon.setVisibility(View.GONE);
-        play_icon.setVisibility(View.VISIBLE);
-    }
-});
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                pause_icon.setVisibility(View.GONE);
+                play_icon.setVisibility(View.VISIBLE);
+            }
+        });
 
 
         numberPicker.setDividerThickness(0);
@@ -268,9 +292,8 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 if (!integerList.contains(numberPicker.getValue())) {
                     integerList.add(numberPicker.getValue());
                 }
-                Log.d("list_size", integerList.size()+ " ");
-                if(integerList.size()>=14)
-                {
+                Log.d("list_size", integerList.size() + " ");
+                if (integerList.size() >= 14) {
                     buttonOnBoardingAction.setVisibility(View.VISIBLE);
                 }
             }
@@ -302,7 +325,7 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 //        play_icon.setVisibility(View.VISIBLE);
 //        pause_icon.setVisibility(View.GONE);
 //        waveformSeekBar.setProgress(0);
-
+//
 //    }
 
     @Override
@@ -383,20 +406,18 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 integerList.add(numberPicker.getValue());
             }
             if (Stash.getString("first_time").equals("no")) {
-                if(integerList.size()>=15)
-                {
+                if (integerList.size() >= 15) {
                     buttonOnBoardingAction.setVisibility(View.VISIBLE);
                 }
                 questionText.setText(nextPosition + "/" + Config.secondRoundDataArrayList().size());
             } else {
-                if(integerList.size()>=10)
-                {
+                if (integerList.size() >= 10) {
                     buttonOnBoardingAction.setVisibility(View.VISIBLE);
                 }
                 questionText.setText(nextPosition + "/" + Config.dataArrayList().size());
             }
 
-            Log.d("list_size", integerList.size()+ " ");
+            Log.d("list_size", integerList.size() + " ");
 
 
         }
@@ -415,18 +436,26 @@ mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Do you want to exit application?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        finishAffinity();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface arg0, int arg1) {
+        if (gallery.getVisibility() == View.VISIBLE || audio.getVisibility() == View.VISIBLE) {
+            gallery.setVisibility(View.GONE);
+            audio.setVisibility(View.GONE);
+            play_icon.setVisibility(View.VISIBLE);
+            pause_icon.setVisibility(View.GONE);
+            waveformSeekBar.setProgress(0);
+        } else {
+            new AlertDialog.Builder(this)
+                    .setMessage("Do you want to exit application?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            finishAffinity();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
 
-                    }
-                })
-                .show();
+                        }
+                    })
+                    .show();
+        }
     }
 }

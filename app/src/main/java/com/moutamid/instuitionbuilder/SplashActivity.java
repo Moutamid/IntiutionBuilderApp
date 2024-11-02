@@ -93,9 +93,7 @@ public class SplashActivity extends AppCompatActivity {
             }
         });
 
-    } else
-
-    {
+    } else {
         Toast.makeText(this, "Please turn on internet", Toast.LENGTH_SHORT).show();
     }
 }

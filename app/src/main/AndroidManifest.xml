@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <application
         android:name=".config.MyApplication"
@@ -16,14 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Home.DemoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Home.AvatarSelectActivity"
+            android:name=".Admin.Activities.AddNewItem"
             android:exported="false" />
         <activity
             android:name=".Home.GoogleActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Home.VideoViewActivity"
             android:exported="false" />
@@ -35,28 +37,28 @@
             android:exported="false" />
         <activity
             android:name=".Authentication.OnBoarding.OnBoardingActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Home.IntroActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Home.NotificationsActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Admin.AdminPanel"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Admin.Activities.NotifcationsActivity"
             android:exported="false" />
         <activity
             android:name=".Authentication.ProfileSelectActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Authentication.MaleProfileSelectActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Authentication.UserDetailsActivity"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".Home.ScoreRanking2Activity"
             android:exported="false" />
@@ -77,7 +79,7 @@
             android:exported="false" />
         <activity
             android:name=".Home.WalkThroughActivity"
-            android:exported="true"
+            android:exported="false"
             android:theme="@style/AppTheme.FOUR" />
         <activity
             android:name=".Authentication.OTPVerificationActivity"
@@ -101,8 +103,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".onboadingOne.OnBoardingDesignOne">
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".onboadingOne.OnBoardingDesignOne"
+            android:exported="false">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
@@ -110,21 +116,42 @@
 
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
-        </activity> <!-- <meta-data -->
-        <!-- android:name="com.facebook.sdk.ApplicationId" -->
-        <!-- android:value="@string/facebook_app_id" /> -->
-        <!-- <activity -->
-        <!-- android:name="com.facebook.FacebookActivity" -->
-        <!-- android:configChanges="keyboard" -->
-        <!-- android:label="@string/app_name" -->
-        <!-- tools:replace="android:configChanges" /> -->
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard"
+            android:label="@string/app_name"
+            tools:replace="android:configChanges" />
+
+<!--        <service-->
+<!--            android:name=".config.MessagingService"-->
+<!--            android:exported="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+
         <service
-            android:name=".config.MessagingService"
-            android:exported="false">
+            android:name=".notifications.FirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

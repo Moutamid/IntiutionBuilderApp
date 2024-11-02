@@ -20,6 +20,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.moutamid.instuitionbuilder.R;
 import com.moutamid.instuitionbuilder.config.Config;
+import com.moutamid.instuitionbuilder.notifications.FCMNotificationHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,8 +46,9 @@ public class NotifcationsActivity extends AppCompatActivity {
             if (edt_message.getText().toString().isEmpty()) {
                 edt_message.setError("Please enter message!");
             } else {
-                sendFCMPush(edt_message.getText().toString());
-
+//                sendFCMPush(edt_message.getText().toString());
+                new FCMNotificationHelper(NotifcationsActivity.this).sendNotification("Instuition Builder", edt_message.getText().toString().trim());
+                Toast.makeText(NotifcationsActivity.this, "Successfully send a notification", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -59,7 +61,7 @@ public class NotifcationsActivity extends AppCompatActivity {
         try {
             notifcationBody.put("title", "Instuition Builder");
             notifcationBody.put("message", message);
-             notification.put("to", "/topics/" + getString(R.string.app_name)+"general");
+            notification.put("to", "/topics/" + getString(R.string.app_name) + "general");
             notification.put("data", notifcationBody);
         } catch (JSONException e) {
             Log.d("error", e.toString());

@@ -50,6 +50,7 @@
             android:background="#F6F4F4"
             android:paddingLeft="15dp"
             android:layout_marginTop="7dp"
+            android:text="moutamidwaseem@gmail.com"
             android:fontFamily="@font/inter_medium"
             android:hint="Email" />
 
@@ -68,6 +69,7 @@
             android:layout_marginLeft="10dp"
             android:background="#F6F4F4"
             android:paddingLeft="15dp"
+            android:text="123456789"
             android:layout_marginTop="3dp"
             android:inputType="textPassword"
             android:layout_marginBottom="2dp"

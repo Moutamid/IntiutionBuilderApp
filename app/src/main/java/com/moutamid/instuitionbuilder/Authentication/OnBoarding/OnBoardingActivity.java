@@ -173,18 +173,16 @@ public class OnBoardingActivity extends AppCompatActivity {
     }
 
     void prepareBoardingData() {
-        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_1 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding1", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
-        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_2= (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding2", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
-        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_3 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding3", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+//        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_1 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding1", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+//        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_2= (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding2", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
+//        com.moutamid.instuitionbuilder.Model.OnBoardingModel onBoardingModel_3 = (com.moutamid.instuitionbuilder.Model.OnBoardingModel) Stash.getObject("boarding3", com.moutamid.instuitionbuilder.Model.OnBoardingModel.class);
 
-        OnBoardingModel bm = new OnBoardingModel(onBoardingModel_1.description, onBoardingModel_1.title, R.drawable.mockup_1, R.drawable.page_1);
+        OnBoardingModel bm = new OnBoardingModel("", "Earn great badges by maintaining your steak", R.drawable.mockup_1, R.drawable.page_1);
         listBoarding.add(bm);
 
-        bm = new OnBoardingModel(onBoardingModel_2.description, onBoardingModel_2.title, R.drawable.mockup_2, R.drawable.page_2);
+        bm = new OnBoardingModel("", "Easily login to your account", R.drawable.mockup_2, R.drawable.page_2);
         listBoarding.add(bm);
-        bm = new OnBoardingModel(onBoardingModel_3.description, onBoardingModel_3.title, R.drawable.mockup_3, R.drawable.page_3);
+        bm = new OnBoardingModel("", "Walk through your vocabulary", R.drawable.mockup_3, R.drawable.page_3);
         listBoarding.add(bm);
-
-
      }
 }
