@@ -131,9 +131,7 @@ public class WalkThroughActivity extends AppCompatActivity {
         showBottomSheetDialog();
         mediaPlayer = MediaPlayer.create(this, R.raw.church);
         showsecondBottomSheetDialog();
-        timer = new
-
-                CountDownTimer(60000, 1000) {
+        timer = new CountDownTimer(60000, 1000) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         // Update the timer display
@@ -145,9 +143,8 @@ public class WalkThroughActivity extends AppCompatActivity {
                         timer.cancel();
                         startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
                     }
-                }.
+                }.start();
 
-                start();
         waveformSeekBar.setSampleFrom(R.raw.church);
 
         badge.setOnClickListener(new View.OnClickListener() {
@@ -187,6 +184,12 @@ public class WalkThroughActivity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().subscribeToTopic(getString(R.string.app_name) + "general");
         buttonOnBoardingAction = findViewById(R.id.buttonOnBoardingAction);
+
+        buttonOnBoardingAction.setOnClickListener(v -> {
+            timer.cancel();
+            startActivity(new Intent(WalkThroughActivity.this, TestStartedActivity.class));
+        });
+
         gallery_icon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
