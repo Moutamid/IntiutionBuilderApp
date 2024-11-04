@@ -67,7 +67,6 @@
                 android:fontFamily="@font/inter_medium"
                 android:hint="Password"
                 android:inputType="textPassword"
-
                 android:paddingLeft="15dp"
                 android:text="123456789" />
 

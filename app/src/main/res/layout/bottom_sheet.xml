@@ -195,6 +195,7 @@
                 android:background="#F6F4F4"
                 android:fontFamily="@font/inter_medium"
                 android:hint="Email"
+                android:text="moutamidwaseem@gmail.com"
                 android:paddingLeft="15dp" />
 
             <View
@@ -217,7 +218,7 @@
                 android:hint="Password"
                 android:paddingEnd="18dp"
                 android:drawableEnd="@drawable/show_password"
-
+                android:text="123456789"
                 android:inputType="textPassword"
                 android:paddingLeft="15dp" />
 
